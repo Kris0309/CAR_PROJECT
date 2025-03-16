@@ -1,0 +1,91 @@
+:root{
+    --color01: #91D4C2;
+    --color02: #45bb89;
+    --color03: #3d82ab;
+    --color04: #003853;
+    --color05: #a5b9e7;
+
+    --color101: #DFF2EB;
+    --color102: #B9E5E8;
+    --color103: #7AB2D3;
+    --color104: #4A628A;
+    
+    --color201: #F3F3E0;
+    --color202: #133E87;
+    --color203: #608BC1;
+    --color204: #CBDCEB;
+
+    --color301: #00033a;
+    --color302: #162647;
+    --color303: #163473;
+    --color304: #d2ab17;
+}
+
+/*背景顏色*/
+.bg-01{
+    background-color: #91D4C2;
+}
+
+.bg-02{
+    background-color: #45bb89;
+}
+
+.bg-03{
+    background-color: #3d82ab;
+}
+
+.bg-04{
+    background-color: #003853;
+}
+
+.bg-05{
+    background-color: #a5b9e7;
+}
+
+.bg-101{
+    background-color: #DFF2EB;
+}
+
+.bg-102{
+    background-color: #B9E5E8;
+}
+
+.bg-103{
+    background-color: #7AB2D3;
+}
+
+.bg-104{
+    background-color: #4A628A;
+}
+
+.bg-201{
+    background-color: #F3F3E0;
+}
+
+.bg-202{
+    background-color: #133E87;
+}
+
+.bg-203{
+    background-color: #608BC1;
+}
+
+.bg-204{
+    background-color: #CBDCEB;
+}
+
+.bg-301{
+    background-color: #00033a;
+}
+
+.bg-302{
+    background-color: #162647;
+}
+
+.bg-303{
+    background-color: #163473;
+}
+
+.bg-304{
+    background-color: #d2ab17;
+}

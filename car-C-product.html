@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品建檔</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/test.css">
+    <style>
+        body {
+            font-family: "Noto Sans TC", serif;
+        }
+    </style>
+</head>
+
+<body class="bg-104" id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-203">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">管理介面</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link line" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link line" href="member_panel.html">會員列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="car-C-product.html">車輛建檔</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link line" href="car-R-product.html">車輛列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="imformation.html">報表</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
+                        class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
+                <button class="btn btn-danger d-none" id="s02_logout_btn" @click="logoutbutton">登出</button>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="d-none card mt-5 shadow shadow-lg" id="card">
+            <div class="card-header bg-303 text-white">新增車輛</div>
+            <div class="card-body bg-101">
+                <div class="row justify-content-center py-5">
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4">
+                                    <label for="pcarPrice" class="form-label">價格</label>
+                                    <input type="number" name="pcarPrice" id="pcarPrice" class="form-control"
+                                        placeholder="1日的價格" v-model="carPrice"
+                                        :class="{ 'is-valid' : flag_carPrice, 'is-invalid' : !flag_carPrice}">
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">{{invalidPriceMessage}}</div>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label for="pcarName" class="form-label">車輛名稱</label>
+                                    <input type="text" name="pcarName" id="pcarName" class="form-control"
+                                        v-model="carName"
+                                        :class="{ 'is-valid' : flag_carName, 'is-invalid' : !flag_carName}"
+                                        placeholder="輸入範例：HONDA-CRV">
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">請填寫</div>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label for="car_Number" class="form-label">車牌號碼</label>
+                                    <input type="text" name="car_Number" id="car_Number" class="form-control"
+                                        placeholder="車牌範例：ABC-1111" v-model="carNumber" maxlength="8"
+                                        :class="{ 'is-valid' : flag_carNumber, 'is-invalid' : !flag_carNumber}">
+                                    <div class="valid-feedback">{{invalidcarNumberMessage}}</div>
+                                    <div class="invalid-feedback">{{invalidcarNumberMessage}}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-3">
+                                    <label for="" class="form-label">乘載人數</label>
+                                    <select class="form-select" aria-label="Default select example" id="count"
+                                        name="count" v-model="peopleCount"
+                                        :class="{'is-valid' : flag_peopleCount, 'is-invalid' : !flag_peopleCount}">
+                                        <option value="" disabled selected>請選擇乘載人數</option>
+                                        <option value="2人座">2人座</option>
+                                        <option value="5人座">5人座</option>
+                                        <option value="7人座">7人座</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <label for="" class="form-label">使用能源</label>
+                                    <select class="form-select" aria-label="Default select example" id="energy"
+                                        name="energy" v-model="energy"
+                                        :class="{'is-valid':flag_energy,'is-invalid': !flag_energy}">
+                                        <option value="" disabled selected>請選擇使用能源</option>
+                                        <option value="汽油">汽油</option>
+                                        <option value="電動">電動</option>
+                                        <option value="油電混和">油電混和</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <label for="" class="form-label">車輛目前所在區域</label>
+                                    <select class="form-select" aria-label="Default select example" id="position"
+                                        name="position" v-model="position"
+                                        :class="{'is-valid' : flag_position, 'is-invalid' : !flag_position}">
+                                        <option value="" disabled selected>所在區域</option>
+                                        <option value="北區">北區</option>
+                                        <option value="中區">中區</option>
+                                        <option value="南區">南區</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <label for="" class="form-label">車輛類型</label>
+                                    <select class="form-select" aria-label="Default select example" id="type"
+                                        name="type" v-model="carType"
+                                        :class="{'is-valid' : flag_carType, 'is-invalid' : !flag_carType}">
+                                        <option value="" disabled selected>車輛類型</option>
+                                        <option value="休旅車">休旅車</option>
+                                        <option value="轎車">轎車</option>
+                                        <option value="小型車">小型車</option>
+                                        <option value="跑車">跑車</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fileupload" class="form-label">圖片上傳</label>
+                                <input class="form-control" type="file" name="fileupload" id="fileupload"
+                                    @change="handleFileUpload" accept="image/jpeg, image/png"
+                                    :class="{'is-valid' : flag_upload, 'is-invalid' : !flag_upload}">
+                                <img v-if="previewUrl" :src="previewUrl" alt="預覽圖片" class="w-25 mt-2">
+                            </div>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" placeholder="備註： " style="height: 100px"
+                                    v-model="remarkMessage" :class="{'is-invalid' : !flag_remarkMessage}"></textarea>
+                                <label for="floatingTextarea2">備註：</label>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-danger" @click="subcancle">取消</button>
+                                <button id="ok_btn" class="btn btn-primary" @click="submitForm">確認</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+
+        function showdata_checkuid(data) {
+            console.log(data);
+            if (data.state) {
+                console.log(data.data.Role)
+                if (data.data.Role === "管理員") {
+                    console.log("歡迎管理員登入！");
+                    $("#card").removeClass("d-none");
+                    //顯示歡迎訊息
+                    $("#s02_username_showtext").removeClass("d-none");
+                    $("#s02_username_text").text(data.data.Username);
+
+                    //顯示登出按鈕
+                    $("#s02_logout_btn").removeClass("d-none");
+
+                    // 按鈕監聽update_btn
+                    $("#mydata #update_btn").click(function () {
+                        console.log($(this).data("id"));
+                        console.log($(this).data("username"));
+                        console.log($(this).data("email"));
+
+                        //將資料同步至modal
+                        u_id = $(this).data("id");
+                        $("#updateModal_username").val($(this).data("username"));
+                        $("#updateModal_email").val($(this).data("email"));
+
+                    });
+                } else {
+                    Swal.fire({
+                        title: "權限不足",
+                        icon: "warning",
+                        text: "此帳號無管理員權限",
+                    }).then(() => {
+                        location.href = "index.html"; // 跳回首頁
+                    });
+                }
+
+            } else {
+                Swal.fire({
+                    title: "請先登入會員!",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: "確認",
+                    denyButtonText: `Don't save`,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        location.href = "index.html";
+                    }
+                });
+            }
+        }
+
+        //from w3school
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        const App = {
+            data() {
+                return {
+                    carPrice: '',
+                    flag_carPrice: false,
+                    invalidPriceMessage: '請填寫',
+                    carName: '',
+                    flag_carName: false,
+                    peopleCount: '',
+                    flag_peopleCount: false,
+                    energy: '',
+                    flag_energy: false,
+                    position: '',
+                    flag_position: false,
+                    carType: '',
+                    flag_carType: false,
+                    carNumber: '',
+                    invalidcarNumberMessage: '請填寫',
+                    flag_carNumber: false,
+                    remarkMessage: '',
+                    flag_remarkMessage: true,
+                    flag_upload: false,
+                    file: null,
+                    previewUrl: '',
+                    formData: new FormData(),
+
+                }
+            },
+            watch: {
+                carPrice: function (newValue) {
+                    const vm = this;
+                    if (newValue > 1000 && newValue < 100000) {
+                        vm.flag_carPrice = true;
+                    } else if (newValue < 1000) {
+                        vm.invalidPriceMessage = '金額太小'
+                        vm.flag_carPrice = false;
+                    } else if (newValue > 100000) {
+                        vm.invalidPriceMessage = '金額太大'
+                        vm.flag_carPrice = false;
+                    }
+                },
+                carName: function (newValue) {
+                    const vm = this;
+                    if (newValue.length > 1 && newValue.length < 21) {
+                        vm.flag_carName = true;
+                    } else {
+                        vm.flag_carName = false;
+                    }
+                },
+                peopleCount: function (newValue) {
+                    const vm = this;
+                    if (newValue != '') {
+                        vm.flag_peopleCount = true;
+                    }
+                    else {
+                        vm.flag_peopleCount = false;
+                    }
+                },
+                energy: function (newValue) {
+                    const vm = this;
+                    if (newValue != '') {
+                        vm.flag_energy = true;
+                    }
+                    else {
+                        vm.flag_energy = false;
+                    }
+                },
+                position: function (newValue) {
+                    const vm = this;
+                    if (newValue != '') {
+                        vm.flag_position = true;
+                    }
+                    else {
+                        vm.flag_position = false;
+                    }
+                },
+                carType: function (newValue) {
+                    const vm = this;
+                    if (newValue != '') {
+                        vm.flag_carType = true;
+                    } else {
+                        vm.flag_carType = false;
+                    }
+                },
+                carNumber: function (newValue) {
+                    const vm = this;
+                    if (newValue.length > 1 && newValue.length < 9) {
+                        var JSONdata = {};
+                        JSONdata["car_Number"] = vm.carNumber;
+                        console.log(JSON.stringify(JSONdata));
+                        //傳遞至後端確認車牌是否可以使用
+                        $.ajax({
+                            type: "POST",
+                            url: "car_control_api.php?action=numcheck",
+                            data: JSON.stringify(JSONdata),
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data);
+                                vm.flag_carNumber = data.state;
+                                vm.invalidcarNumberMessage = data.message;
+
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    title: "API介接錯誤?",
+                                    icon: "error",
+                                    text: "car_control_api.php?action=numcheck",
+                                });
+                            }
+                        })
+                    }
+                },
+                remarkMessage: function (newValue) {
+                    const vm = this;
+                    if (newValue.length < 301) {
+                        vm.flag_remarkMessage = true;
+                    } else {
+                        vm.flag_remarkMessage = false;
+                    }
+                },
+
+            },
+            methods: {
+                checkUid01() {
+                    //確認uid01是否存在
+                    if (getCookie("Uid01")) {
+                        //將uid01傳遞至後端API執行驗證
+                        //input{"uid01":"1ssadwasdw"}
+                        var JSONdata = {};
+                        JSONdata["uid01"] = getCookie("Uid01");
+                        console.log(JSON.stringify(JSONdata));
+
+                        $.ajax({
+                            type: "POST",
+                            url: "member_control_api_v1.php?action=checkuid",
+                            data: JSON.stringify(JSONdata),
+                            dataType: "json",
+                            success: showdata_checkuid,
+                            error: function () {
+                                Swal.fire({
+                                    title: "API介接錯誤?",
+                                    icon: "error",
+                                    text: "member_control_api_v1.php",
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: "請先登入會員!",
+                            icon: "info",
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.replace("index.html");
+                            }
+                        });
+                    }
+                },
+                logoutbutton() {
+                    Swal.fire({
+                        title: "確定要登出嗎?",
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: "確認",
+                        denyButtonText: `取消`,
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 當用戶點擊「確認」時，執行登出操作
+                            setCookie("Uid01", "", 7);
+                            location.href = "index.html";
+                            $("#drop").addClass("d-none");
+                        } else if (result.isDenied) {
+                            // 當用戶點擊「取消」時，什麼也不做
+                            console.log("取消登出");
+                        }
+                    })
+                },
+                subcancle() {
+                    location.href = "car-C-product.html";
+                },
+                handleFileUpload(event) {
+                    const vm = this;
+                    const file = event.target.files[0];
+                    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+                        vm.previewUrl = URL.createObjectURL(file);
+                        vm.flag_upload = true;
+                        vm.file = file;
+                    } else {
+                        vm.previewUrl = '';
+                        vm.flag_upload = false;
+                        alert('請選擇 JPEG 或 PNG 格式的圖片');
+                    }
+                },
+                async submitForm() {
+                    if (this.validateFields()) {
+                        const vm = this;
+                        const carData = {
+                            car_Price: vm.carPrice,
+                            carName: vm.carName,
+                            car_Number: vm.carNumber,
+                            count: vm.peopleCount,
+                            position: vm.position,
+                            type: vm.carType,
+                            energy: vm.energy,
+                            remark: vm.remarkMessage,
+                            Photo: vm.file ? vm.file.name : ''
+                        };
+
+                        try {
+                            const id = await vm.sendData(carData);
+                            if (id) {
+                                if (vm.flag_upload) {
+                                    // 如果有上傳圖片，則執行上傳
+                                    await vm.uploadFile(id);
+                                }
+                                // 成功提交，顯示 SweetAlert 提示
+                                Swal.fire({
+                                    title: '提交成功！',
+                                    text: '您的資料已經成功提交。',
+                                    icon: 'success',
+                                    confirmButtonText: '確定'
+                                }).then(() => {
+                                    location.href = "car-C-product.html";
+                                });
+                            } else {
+                                // 如果提交資料失敗
+                                Swal.fire({
+                                    title: '提交失敗',
+                                    text: '資料提交過程中出現問題，請稍後再試。',
+                                    icon: 'error',
+                                    confirmButtonText: '確認'
+                                });
+                            }
+                        } catch (error) {
+                            // 如果有錯誤
+                            console.error('提交失敗', error);
+                            Swal.fire({
+                                title: '提交失敗',
+                                text: '發生錯誤，請稍後再試。',
+                                icon: 'error',
+                                confirmButtonText: '確認'
+                            });
+                        }
+                    } else {
+                        // 欄位未填寫正確
+                        Swal.fire({
+                            title: '資料錯誤',
+                            text: '請確認所有欄位均已填寫正確。',
+                            icon: 'warning',
+                            confirmButtonText: '確認'
+                        });
+                    }
+                }
+                ,
+                validateFields() {
+                    const vm = this;
+                    return vm.flag_carPrice && vm.flag_carName && vm.flag_carNumber && vm.flag_peopleCount && vm.flag_energy && vm.flag_position && vm.flag_carType && vm.flag_remarkMessage;
+                },
+                async sendData(dataJSON) {
+                    try {
+                        const response = await fetch('car_control_api.php?action=create', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(dataJSON)
+                        });
+                        const data = await response.json();
+                        if (data.state) {
+                            return data.id;
+                        } else {
+                            alert('新增失敗: ' + data.message);
+                            return null;
+                        }
+                    } catch (error) {
+                        console.error('請求失敗', error);
+                        alert('請求發送失敗');
+                        return null;
+                    }
+                },
+                uploadFile(id) {
+                    const formData = new FormData();
+                    formData.append('file', this.file);
+                    formData.append('id', id);
+
+                    fetch('fileupload_api.php', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json())
+                        .then(data => console.log('上傳成功', data))
+                        .catch(error => console.error('上傳失敗', error));
+                }
+            },
+            mounted() {
+                this.checkUid01();
+            }
+        }
+        Vue.createApp(App).mount('#app');
+    </script>
+</body>
+
+</html>

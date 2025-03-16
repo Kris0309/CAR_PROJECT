@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Sans+JP&family=Noto+Sans+TC:wght@100..900&family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+
+
+:root {
+    --color01: #91D4C2;
+    --color02: #45bb89;
+    --color03: #3d82ab;
+    --color04: #003853;
+    --color05: #a5b9e7;
+
+    --color101: #DFF2EB;
+    --color102: #B9E5E8;
+    --color103: #7AB2D3;
+    --color104: #4A628A;
+
+    --color201: #F3F3E0;
+    --color202: #133E87;
+    --color203: #608BC1;
+    --color204: #CBDCEB;
+
+    --color301: #00033a;
+    --color302: #162647;
+    --color303: #163473;
+    --color304: #d2ab17;
+}
+
+/*背景顏色*/
+.bg-01 {
+    background-color: #91D4C2;
+}
+
+.bg-02 {
+    background-color: #45bb89;
+}
+
+.bg-03 {
+    background-color: #3d82ab;
+}
+
+.bg-04 {
+    background-color: #003853;
+}
+
+.bg-05 {
+    background-color: #a5b9e7;
+}
+
+.bg-101 {
+    background-color: #DFF2EB;
+}
+
+.bg-102 {
+    background-color: #B9E5E8;
+}
+
+.bg-103 {
+    background-color: #7AB2D3;
+}
+
+.bg-104 {
+    background-color: #4A628A;
+}
+
+.bg-201 {
+    background-color: #F3F3E0;
+}
+
+.bg-202 {
+    background-color: #133E87;
+}
+
+.bg-203 {
+    background-color: #608BC1;
+}
+
+.bg-204 {
+    background-color: #CBDCEB;
+}
+
+.bg-301 {
+    background-color: #00033a;
+}
+
+.bg-302 {
+    background-color: #162647;
+}
+
+.bg-303 {
+    background-color: #163473;
+}
+
+.bg-304 {
+    background-color: #d2ab17;
+}
+
+.bg-cover {
+    background-position: center center;
+    background-size: cover;
+}
+
+/* 按鈕 */
+
+.btn-gold {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #fcd54a;
+    --bs-btn-border-color: #fcd54a;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #d2ab17;
+    --bs-btn-hover-border-color: #d2ab17;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #d2ab17;
+    --bs-btn-active-border-color: #d2ab17;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #fcd54a;
+    --bs-btn-disabled-border-color: #fcd54a;
+}
+
+.btn-outline-gold {
+    --bs-btn-color: #d2ab17;
+    --bs-btn-border-color: #d2ab17;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #d2ab17;
+    --bs-btn-hover-border-color: #d2ab17;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #d2ab17;
+    --bs-btn-active-border-color: #d2ab17;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #d2ab17;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #d2ab17;
+    --bs-gradient: none;
+}
+
+.btn-heavyblue {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #608BC1;
+    --bs-btn-border-color: #608BC1;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #133E87;
+    --bs-btn-hover-border-color: #133E87;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #133E87;
+    --bs-btn-active-border-color: #133E87;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #608BC1;
+    --bs-btn-disabled-border-color: #608BC1;
+}
+
+.btn-outline-heavyblue {
+    --bs-btn-color: #133E87;
+    --bs-btn-border-color: #133E87;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #133E87;
+    --bs-btn-hover-border-color: #133E87;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #133E87;
+    --bs-btn-active-border-color: #133E87;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #133E87;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #133E87;
+    --bs-gradient: none;
+}
+
+/*文字粗體*/
+.fw-100 {
+    font-weight: 100;
+}
+
+.fw-200 {
+    font-weight: 200;
+}
+
+.fw-300 {
+    font-weight: 300;
+}
+
+.fw-400 {
+    font-weight: 400;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.fw-800 {
+    font-weight: 800;
+}
+
+.fw-900 {
+    font-weight: 900;
+}
+
+
+
+
+/*外層：box_in 內層：roller*/
+.box_in {
+    position: relative;
+    overflow: hidden;
+}
+
+.box_in .roller {
+    position: absolute;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
+    width: 100%;
+    height: 100%;
+    top: -100%;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box_in:hover .roller {
+    top: 0;
+    transition: top 1s;
+}
+
+.box_inb {
+    position: relative;
+    overflow: hidden;
+}
+
+.box_inb .rollerb {
+    position: absolute;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
+    width: 100%;
+    height: 100%;
+    bottom: -100%;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box_inb:hover .rollerb {
+    bottom: 0;
+    transition: bottom 1s;
+}
+
+.box_inl {
+    position: relative;
+    overflow: hidden;
+}
+
+.box_inl .rollerl {
+    position: absolute;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box_inl:hover .rollerl {
+    left: 0;
+    transition: left 1s;
+}
+
+/* 選單 */
+.banner nav {
+    height: 90px;
+    text-align: center;
+    background-color: var(--color103);
+}
+
+.banner nav ul {
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.banner nav ul li {
+    list-style-type: none;
+    float: left;
+}
+
+.banner nav ul a {
+    display: block;
+    background-color: var(--color101);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: var(--color104);
+    font-size: 20px;
+    border-radius: 20px
+}
+
+.banner nav ul a:hover {
+    color: var(--color103);
+    background-color: var(--color104);
+}
+
+@media screen and (max-width:768px) {
+    .banner nav ul li a {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 12px;
+    }
+}
+
+/* 1. table .table-rwd 
+   2. <td data-th="xx">
+   3. <span class="table-col"></span>*/
+
+@media screen and (max-width:768px) {
+    /* body{
+        background-color: var(--color01); 
+        background-image: linear-gradient(90deg, rgba(223, 176, 176, 0.1), rgba(45, 134, 218, 0.8));
+    } */
+
+    .table-rwd thead {
+        display: none;
+    }
+
+    .table-rwd tbody tr {
+        display: block;
+        border: 2px solid var(--color04);
+        margin-bottom: 10px;
+    }
+
+    .table-rwd tbody tr td {
+        display: block;
+        overflow: hidden;
+    }
+
+    */ .table-rwd tbody tr td::before {
+        content: attr(data-th)"：";
+        /*data-XX偽文字(畫面被拉小後會出現)*/
+        /* font-weight: 900;*/
+        color: var(--color04);
+        font-size: 20px;
+        display: block;
+        float: left;
+        width: 30%;
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .table-rwd tbody tr td span.table-th {
+        display: block;
+        float: left;
+        width: 70%;
+    }
+
+}
+
+/* 文字底線 */
+/* 設定 <a> 樣式 */
+a.line {
+    position: relative;
+    /* 設定相對定位，以便讓 ::after 參考這個元素 */
+    text-decoration: none;
+    /* 移除預設的底線，改用 ::after 來製作動畫 */
+}
+
+/* 使用 ::after 來創造底線動畫 */
+a.line::after {
+    content: "";
+    /* 必須有 content，否則 ::after 不會出現在畫面上 */
+    position: absolute;
+    /* 設定絕對定位，相對於 a.line 這個元素 */
+    left: 0;
+    /* 從左邊開始 */
+    bottom: -2px;
+    /* 距離文字 2px，使其位於文字下方 */
+    width: 0;
+    /* 初始時底線寬度為 0，讓它隱藏 */
+    height: 2px;
+    /* 設定底線的厚度 */
+    background-color: currentColor;
+    /* 使用 a 元素的文字顏色作為底線顏色 */
+    transition: width 0.3s ease-in-out;
+    /* 設定寬度的變化動畫，使底線從無到有逐漸展開 */
+}
+
+/* 滑鼠懸停 (hover) 或點擊 (active) 時，讓底線展開 */
+a.line:hover::after,
+a.line:active::after {
+    width: 100%;
+    /* 讓底線從 0 擴展到 100%（整個文字底部） */
+}
+
+
+/* RWD文字 */
+.sec-text {
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--color101);
+    margin: 15px;
+    box-shadow: 2px 2px 4px 2px #ffffff;
+    border-radius: 15px;
+}

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>車輛管理介面-車輛列表</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/test.css">
+    <style>
+        body {
+            font-family: "Noto Sans TC", serif;
+        }
+
+        img {
+            height: 150px;
+            padding: 20px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body class="bg-104" id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-203">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">管理介面</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link line" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link line" href="member_panel.html">會員列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link line" aria-current="page" href="car-C-product.html">車輛建檔</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="car-R-product.html">車輛列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="imformation.html">報表</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
+                        class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
+                <button class="btn btn-danger d-none" id="s02_logout_btn" @click="logoutbutton">登出</button>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3 text-center" id="mydata">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="#" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title" data-name="車輛名稱">XXXX</h5>
+                        <h6 class="card-subtitle mb-2" data-number="車牌號碼">車牌號碼：XXXX</h6>
+                        <h6 data-onstate="狀態" class="text-danger fw-600">狀態：XXXX</h6>
+                        <p class="card-text text-start">
+                            <span class="d-none" data-id="編號">編號XXX</span>
+                            <span data-price="價格">價格：XXXX</span><br>
+                            <span data-count="乘載人數">乘載人數：XXXXX</span><br>
+                            <span data-position="車輛所在區域">車輛所在區域：XXXX</span><br>
+                            <span data-energy="所使用能源">所使用能源：XXXX</span><br>
+                            <span data-remark="備註">備註：XXXX</span><br>
+                            <span data-createTime="建檔時間">建檔時間：XXXX</span>
+                        </p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+                            id="update_btn">更新</button>
+                        <button class="btn btn-danger" id="delete_btn">刪除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- updateModal -->
+        <div class="modal fade modal-lg" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-bg-warning">
+                        <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">車輛資訊更新</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="carName" class="form-label">車輛名稱</label>
+                                    <input type="text" class="form-control" name="carName" disabled id="carName">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="carNumber" class="form-label">車牌號碼</label>
+                                    <input type="text" class="form-control" name="carNumber" disabled id="carNumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pcarPrice" class="form-label">價格</label>
+                            <input type="number" class="form-control is-valid" name="pcarPrice" id="pcarPrice">
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">不得超過100000</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">狀態</label>
+                            <select class="form-select is-valid" aria-label="Default select example" id="on_state"
+                                name="on_state">
+                                <option selected disabled>請選擇狀態</option>
+                                <option value="下架">下架</option>
+                                <option value="借出">借出</option>
+                                <option value="上架">上架</option>
+                            </select>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">車輛所在區域</label>
+                            <select class="form-select is-valid" aria-label="Default select example" id="position"
+                                name="position">
+                                <option value="" class="text-center" selected disabled>-----請選擇所在區域-----</option>
+                                <option value="北區">北區</option>
+                                <option value="中區">中區</option>
+                                <option value="南區">南區</option>
+                            </select>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="備註： " id="floatingTextarea2"
+                                style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">備註：</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="updateModal_ok_btn">確認</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/CAR_PROJECT/js/bootstrap.bundle.min.js"></script>
+    <script src="/CAR_PROJECT/js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        var flag_pcarPrice = true;
+        var flag_energy = true;
+        var flag_position = true;
+        var flag_floatingTextarea2 = true;
+        var flag_on_state = true;
+
+        var uid;
+
+        function showdata_checkuid(data) {
+            console.log(data);
+            if (data.state) {
+                if (data.data.Role === "管理員") {
+                    console.log("歡迎管理員登入！");
+                    //顯示歡迎訊息
+                    $("#s02_username_showtext").removeClass("d-none");
+                    $("#s02_username_text").text(data.data.Username);
+
+                    //顯示登出按鈕
+                    $("#s02_logout_btn").removeClass("d-none");
+
+                    //渲染table資料
+                    $.ajax({
+                        type: "GET",
+                        url: "car_control_api.php?action=carlist",
+                        dataType: "json",
+                        async: false,
+                        success: showdata,
+                        error: function () {
+                            alert("car_control_api.php?action=carlist");
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "權限不足",
+                        icon: "warning",
+                        text: "此帳號無管理員權限",
+                    }).then(() => {
+                        location.href = "index.html"; // 跳回首頁
+                    });
+                }
+
+
+            }
+
+            //監聽更新按鈕update_btn
+            $("#mydata #update_btn").click(function () {
+                console.log($(this).data("id"));
+                console.log($(this).data("price"));
+                console.log($(this).data("position"));
+                console.log($(this).data("remark"));
+                console.log($(this).data("onstate"));
+
+                uid = $(this).data("id");
+                $("#carName").val($(this).data("name"));
+                $("#carNumber").val($(this).data("number"));
+                $("#pcarPrice").val($(this).data("price"));
+                $("#position").val($(this).data("position"));
+                $("#on_state").val($(this).data("onstate"));
+                $("#floatingTextarea2").val($(this).data("remark"));
+            });
+
+            //監聽刪除按鈕delete_btn
+            $("#mydata #delete_btn").click(function () {
+                Swal.fire({
+                    title: "確認刪除?",
+                    text: "確認要刪除這筆資料嗎?",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "確認"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log($(this).data("id"));
+                        //傳遞至後端API執行刪除行為
+                        //input: {"id" : "XXX"}
+
+                        var JSONdata = {};
+                        JSONdata["id"] = $(this).data("id");
+                        console.log(JSON.stringify(JSONdata));
+
+                        $.ajax({
+                            type: "DELETE",
+                            url: "car_control_api.php?action=delete",
+                            data: JSON.stringify(JSONdata),
+                            dataType: "json",
+                            success: showdata_delete,
+                            error: function () {
+                                alert("car_control_api.php");//sweetalert
+                            }
+                        });
+                    }
+                });
+            });
+
+            //即時監聽 price
+            $("#pcarPrice").bind("input propertychange", function () {
+                if ($(this).val() > 0 && $(this).val() < 100000) {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_pcarPrice = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_pcarPrice = false;
+                }
+            });
+
+            $("#position").change(function () {
+                if ($(this).val() != "") {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_position = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_position = false;
+                }
+            });
+
+            $("#on_state").change(function () {
+                if ($(this).val() != "") {
+                    $(this).removeClass("is-invalid");
+                    $(this).addClass("is-valid");
+                    flag_on_state = true;
+                } else {
+                    $(this).removeClass("is-valid");
+                    $(this).addClass("is-invalid");
+                    flag_on_state = false;
+                }
+            });
+
+            $("#floatingTextarea2").bind("input propertychange", function () {
+                if ($(this).val().length < 301) {
+                    $("#floatingTextarea2").removeClass("is-invalid");
+                    $("#floatingTextarea2").addClass("is-valid");
+                    flag_floatingTextarea2 = true;
+                } else {
+                    $("#floatingTextarea2").removeClass("is-valid");
+                    $("#floatingTextarea2").addClass("is-invalid");
+                    flag_floatingTextarea2 = false;
+                }
+            });
+
+            //監聽updateModal_ok_btn
+            $("#updateModal_ok_btn").click(function () {
+                if (flag_pcarPrice && flag_position && flag_on_state) {
+                    //符合規定, 傳遞至後端API執行更新行為
+                    var JSONdata = {};
+                    JSONdata["id"] = uid;
+                    JSONdata["car_Price"] = $("#pcarPrice").val();
+                    JSONdata["position"] = $("#position").val();
+                    JSONdata["remark"] = $("#floatingTextarea2").val();
+                    JSONdata["on_state"] = $("#on_state").val();
+                    console.log(JSON.stringify(JSONdata));
+
+                    $.ajax({
+                        type: "POST",
+                        url: "car_control_api.php?action=update",
+                        data: JSON.stringify(JSONdata),
+                        dataType: "json",
+                        success: showdata_updata,
+                        error: function () {
+                            alert("car_control_api.php");
+                        }
+                    });
+
+                } else {
+                    Swal.fire({
+                        title: "欄位錯誤",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+
+        function showdata(data) {
+            console.log(data);
+            $("#mydata").empty();
+            if (data.state) {
+                data.data.forEach(function (item) {
+                    var strHTML = `
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="upload/${item.Photo}" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" data-name="車輛名稱">${item.carName}</h5>
+                                <h6 class="card-subtitle mb-2" data-number="車牌號碼">車牌號碼：${item.car_Number}</h6>
+                                <h6 data-onstate="狀態" class="text-danger fw-600">狀態：${item.on_state}</h6>
+                                <p class="card-text text-start">
+                                    <span class="d-none" data-id="編號">編號${item.id}</span>
+                                    <span data-price="價格">價格：${item.car_Price}</span><br>
+                                    <span data-count="乘載人數">乘載人數：${item.count}</span><br>
+                                    <span data-position="車輛所在區域">車輛所在區域：${item.position}</span><br>
+                                    <span data-type="車輛類型">車輛類型：${item.type}</span><br>
+                                    <span data-energy="所使用能源">所使用能源：${item.energy}</span><br>
+                                    <span data-remark="備註">備註：${item.remark}</span><br>
+                                    <span data-createTime="建檔時間">建檔時間：${item.Create_at}</span>
+                                </p>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+                                    data-id="${item.id}" data-name="${item.carName}" data-number="${item.car_Number}" data-onstate="${item.on_state}" data-price="${item.car_Price}" data-position="${item.position}" data-remark="${item.remark}"
+                                    id="update_btn">更新</button>
+                                <button class="btn btn-danger" id="delete_btn" data-id="${item.id}">刪除</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                    $("#mydata").append(strHTML);
+                });
+            } else {
+                Swal.fire({
+                    title: "錯誤",
+                    text: data.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        function showdata_updata(data) {
+            console.log(data);
+            if (data.state) {
+                Swal.fire({
+                    title: "更新成功",
+                    icon: "success"
+                }).then(() => {
+                    location.href = "car-R-product.html";
+                });
+            } else {
+                Swal.fire({
+                    title: "錯誤",
+                    text: data.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        function showdata_delete(data) {
+            console.log(data);
+            if (data.state) {
+                Swal.fire({
+                    title: "刪除成功",
+                    icon: "success"
+                }).then(() => {
+                    location.href = "car-R-product.html";
+                });
+            } else {
+                Swal.fire({
+                    title: "錯誤",
+                    text: data.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        //from w3school
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        const App = {
+            data() {
+                return {
+
+                }
+            },
+            watch: {
+
+            },
+            methods: {
+                logoutbutton() {
+                    Swal.fire({
+                        title: "確定要登出嗎?",
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: "確認",
+                        denyButtonText: `取消`,
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 當用戶點擊「確認」時，執行登出操作
+                            setCookie("Uid01", "", 7);
+                            location.href = "index.html";
+                            $("#drop").addClass("d-none");
+                        } else if (result.isDenied) {
+                            // 當用戶點擊「取消」時，什麼也不做
+                            console.log("取消登出");
+                        }
+                    })
+                },
+                checkUid01() {
+                    //確認uid01是否存在
+                    if (getCookie("Uid01")) {
+                        //將uid01傳遞至後端API執行驗證
+                        //input{"uid01":"1ssadwasdw"}
+                        var JSONdata = {};
+                        JSONdata["uid01"] = getCookie("Uid01");
+                        console.log(JSON.stringify(JSONdata));
+
+                        $.ajax({
+                            type: "POST",
+                            url: "member_control_api_v1.php?action=checkuid",
+                            data: JSON.stringify(JSONdata),
+                            dataType: "json",
+                            success: showdata_checkuid,
+                            error: function () {
+                                Swal.fire({
+                                    title: "API介接錯誤?",
+                                    icon: "error",
+                                    text: "member_control_api_v1.php",
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: "請先登入會員!",
+                            icon: "info",
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = "index.html";
+                            }
+                        });
+                    }
+                },
+            },
+            mounted(){
+                this.checkUid01();
+            }
+        }
+        Vue.createApp(App).mount('#app');
+
+    </script>
+</body>
+
+</html>
