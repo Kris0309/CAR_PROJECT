@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員管理控制台</title>
+    <title>管理介面-會員管理</title>
     <link rel="stylesheet" href="css/test.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
@@ -14,7 +14,7 @@
     </style>
 </head>
 
-<body class="bg-104">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-203">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">管理介面</a>
@@ -23,7 +23,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link line" href="index.html">首頁</a>
                     </li>
@@ -39,19 +39,22 @@
                     <li class="nav-item">
                         <a class="nav-link line" href="imformation.html">報表</a>
                     </li>
+                    <li>
+                        <a class="nav-link line" href="orderlist_panel.html">訂單列表</a>
+                    </li>
                 </ul>
-            </div>
-            <div>
-                <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
-                        class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
-                <button class="btn btn-danger d-none" id="s02_logout_btn">登出</button>
+                <div>
+                    <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
+                            class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
+                    <button class="btn btn-danger d-none" id="s02_logout_btn" @click="logoutbutton">登出</button>
+                </div>
             </div>
         </div>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <table class="table shadow-lg mt-5 table-rwd bg-204 d-none" id="table">
+                <table class="table shadow-lg mt-5 table-rwd d-none" id="table">
                     <thead>
                         <tr class="fw-600">
                             <th>編號</th>

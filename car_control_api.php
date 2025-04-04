@@ -84,7 +84,7 @@ function num_check()
 
             if ($result->num_rows === 1) {
                 //已存在
-                respond(false, "車牌已存在");
+                respond(false, "車牌號碼有誤");
             } else {
                 //不存在
                 respond(true, "正確格式");
@@ -105,11 +105,7 @@ function list_car()
     $conn = create_connection();
 
     $stmt = $conn->prepare("SELECT id, car_Price, carName, car_Number, count, position, energy, type, remark, Photo, on_state ,Create_at FROM car ORDER BY position ASC");
-    if (!$stmt) {
-        die("Prepare failed: " . $conn->error);
-    }
     $stmt->execute();
-
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
@@ -126,6 +122,7 @@ function list_car()
     $conn->close();
 }
 
+// 車輛數量統計
 function count_car()
 {
     $conn = create_connection();
@@ -187,7 +184,7 @@ function delete_car()
         if ($p_id) {
             $conn = create_connection();
 
-            $stmt = $conn->prepare("DELETE FROM car WHERE ID = ?");
+            $stmt = $conn->prepare("DELETE FROM car WHERE id = ?");
             $stmt->bind_param("i", $p_id); //一定要傳遞變數
 
             if ($stmt->execute()) {
@@ -228,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         default:
-            respond(false, "無效的操作");;
+            respond(false, "無效的操作");
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'] ?? '';

@@ -71,53 +71,52 @@ function register_user()
 // {"state" : false, "message" : "登入失敗與相關錯誤訊息"}
 // {"state" : false, "message" : "欄位錯誤"}
 // {"state" : false, "message" : "欄位不得為空"}
-function login_user()
-{
+function login_user(){
     $input = get_json_input();
-    if (isset($input["Username"], $input["Password"])) {
+    if(isset($input["Username"], $input["Password"])){
         $p_username = trim($input["Username"]);
         $p_password = trim($input["Password"]);
-        if ($p_username && $p_password) {
+        if($p_username && $p_password){
             $conn = create_connection();
-
+        
             $stmt = $conn->prepare("SELECT * FROM user WHERE Username = ?");
             $stmt->bind_param("s", $p_username); //一定要傳遞變數
             $stmt->execute();
             $result = $stmt->get_result();
-
-            if ($result->num_rows === 1) {
+           
+            if($result->num_rows === 1){
                 //抓取密碼執行password_verify比對
                 $row = $result->fetch_assoc();
-                if (password_verify($p_password, $row["Password"])) {
+                if(password_verify($p_password, $row["Password"])){
                     //比對成功
                     //產生UID並更新至資料庫
                     $uid01 = substr(hash('sha256', time()), 10, 4) . substr(bin2hex(random_bytes(16)), 4, 4);
                     $update_stmt = $conn->prepare("UPDATE user SET Uid01 = ? WHERE Username = ?");
                     $update_stmt->bind_param('ss', $uid01, $p_username);
-                    if ($update_stmt->execute()) {
+                    if($update_stmt->execute()){
                         // unset($row["Password"]);
                         //取得登入的使用者資訊
                         $user_stmt = $conn->prepare("SELECT Username, Email, Uid01, Phone, Role, Created_at FROM user WHERE Username = ?");
                         $user_stmt->bind_param("s", $p_username); //一定要傳遞變數
                         $user_stmt->execute();
                         $user_data = $user_stmt->get_result()->fetch_assoc();
-                        respond(true, "登入成功", $user_data);
-                    } else {
-                        respond(false, "登入失敗, UID更新失敗");
+                        respond(true, "登入成功", $user_data);                          
+                    }else{
+                        respond(false, "登入失敗, UID更新失敗");  
                     }
-                } else {
+                }else{
                     //比對失敗
                     respond(false, "登入失敗, 密碼錯誤");
                 }
-            } else {
+            }else{
                 respond(false, "登入失敗, 該帳號不存在");
             }
             $stmt->close();
             $conn->close();
-        } else {
+        }else{
             respond(false, "登入失敗, 欄位不得為空");
         }
-    } else {
+    }else{
         respond(false, "登入失敗, 欄位錯誤");
     }
 }
@@ -195,6 +194,7 @@ function check_uni_Phone()
     $input = get_json_input();
     if (isset($input["Phone"])) {
         $p_phone = trim($input["Phone"]);
+        
         if ($p_phone) {
             $conn = create_connection();
 
@@ -208,7 +208,7 @@ function check_uni_Phone()
                 respond(false, "手機號碼有誤");
             } else {
                 //手機不存在
-                respond(true, "正確格式");
+                respond(true, "正確格式，可以使用");
             }
             $stmt->close();
             $conn->close();

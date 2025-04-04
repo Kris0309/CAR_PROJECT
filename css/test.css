@@ -341,8 +341,8 @@
 
     .table-rwd tbody tr {
         display: block;
-        border: 2px solid var(--color04);
-        margin-bottom: 10px;
+        border: 5px solid var(--color04);
+        margin-bottom: 15px;
     }
 
     .table-rwd tbody tr td {
@@ -351,11 +351,11 @@
     }
 
     */ .table-rwd tbody tr td::before {
-        content: attr(data-th)"：";
+        content: attr(data-th)" ： ";
         /*data-XX偽文字(畫面被拉小後會出現)*/
-        /* font-weight: 900;*/
         color: var(--color04);
         font-size: 20px;
+        font-weight: 900;
         display: block;
         float: left;
         width: 30%;

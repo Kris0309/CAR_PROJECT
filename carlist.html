@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>車輛管理介面-車輛列表</title>
+    <title>車輛列表</title>
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/test.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
             font-family: "Noto Sans TC", serif;
@@ -21,369 +22,466 @@
             padding: 20px;
             object-fit: contain;
         }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(203, 220, 235, 1);
+            /* 初始不透明 */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(203, 220, 235, 0.5);
+            /* 滾動後變半透明 */
+        }
     </style>
 </head>
 
-<body class="bg-104" id="app">
-
-    <section>
-        <nav class="navbar navbar-expand-lg bg-204 fw-600">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <i class="fa-solid fa-car fa-2x" style="color: rgb(231, 155, 14);"></i>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link line" aria-current="page" href="index.html"
-                                style="color: #133E87;">首頁</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link line" href="#" style="color: #133E87;">最新優惠</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link line" href="#" style="color: #133E87;">特色介紹</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link line" href="carlist.html" style="color: #133E87;">車輛一覽</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link line" href="#" style="color: #133E87;">預定車輛</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link line" href="#" style="color: #133E87;">關於我們</a>
-                        </li>
-                        <li class="nav-item dropdown d-none" id="drop">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false" style="color: #133E87;">
-                                管理介面
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="car-C-product.html">車輛建檔</a></li>
-                                <li><a class="dropdown-item" href="car-R-product.html">車輛列表</a></li>
-                                <li><a class="dropdown-item" href="member_panel.html">會員列表</a></li>
-                                <li><a class="dropdown-item" href="imformation.html">報表</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <div>
-                        <span class="h4 fw-900 d-none" id="s02_username_showtext" style="color: #d2ab17;">會員：<span
-                                class="h3 fw-900" id="s02_username_text" style="color: #163473;">XXX</span></span>
-                        <button class="btn btn-outline-gold fw-900" data-bs-toggle="modal"
-                            data-bs-target="#registerModal" id="s02_reg_btn">註冊</button>
-                        <button class="btn btn-outline-heavyblue fw-600" data-bs-toggle="modal"
-                            data-bs-target="#loginModal" id="s02_login_btn">登入</button>
-                        <button class="btn btn-danger d-none fw-600" data-bs-toggle="modal"
-                            data-bs-target="#logoutModal" id="s02_logout_btn" @click="logoutbutton">登出</button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </section>
-
-    <!-- registerModal -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-203">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">會員註冊</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="d-flex flex-column h-100">
-                                <div class="display-6 fw-900 my-3">申請會員注意事項：</div>
-                                <div class="accordion accordion-flush" id="accordionFlushExample">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingOne">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                aria-expanded="false" aria-controls="flush-collapseOne">
-                                                會員資格
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>申請會員需年滿 <span class="text-danger">18</span> 歲，部分高級車款需 <span
-                                                        class="text-danger">25</span> 歲以上 才可租借。</p>
-                                                <p>需提供有效的 駕駛執照（國內或國際駕照）與 信用卡 進行驗證。</p>
-                                                <p>會員帳戶不得轉讓或共用，<span class="text-danger">違規者將被取消會員資格。</span> </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingTwo">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
-                                                aria-expanded="false" aria-controls="flush-collapseTwo">
-                                                租車預訂與取消
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>所有租車預訂需提前 <span class="text-danger">24</span> 小時 完成，特定車款可能需更長預訂時間。
-                                                </p>
-                                                <p>若需取消預訂，請於取車前 <span class="text-danger">12</span> 小時內 通知，否則可能會產生取消費用。
-                                                </p>
-                                                <p>會員可透過官網進行預訂與修改，臨時變更須視車輛供應情況而定。</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                                aria-expanded="false" aria-controls="flush-collapseThree">
-                                                租車與使用規範
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree"
-                                            data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>取車時需攜帶 會員證、有效駕照 及 信用卡 進行身份驗證。</p>
-                                                <p>會員應遵守當地交通法規，違規罰單與相關費用需由會員自行承擔。</p>
-                                                <p>車輛不可轉租、非法使用或參與競速活動，違者將被追究法律責任。</p>
-                                                <p>會員須妥善保管車輛，如有遺失車鑰、車損、內部設備損壞等，需負擔相應維修費用。</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingFour">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                                                aria-expanded="false" aria-controls="flush-collapseFour">
-                                                保險與責任
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseFour" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>所有租賃車輛皆包含基本保險（第三方責任險、車損險等），可選擇額外購買全額保障方案。</p>
-                                                <p>若發生事故，會員需立即聯絡客服並報警處理，避免私下協議，以確保保險有效性。</p>
-                                                <p>會員如有<span class="text-danger">違約</span>行為，可能面臨額外費用或被取消會員資格。</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingFive">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseFive"
-                                                aria-expanded="false" aria-controls="flush-collapseFive">
-                                                會員權益
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseFive" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>會員可享 租車折扣、生日優惠、積分兌換 等專屬福利。</p>
-                                                <p>長期會員可獲得 免費升級車款、額外駕駛人優惠 等權益。</p>
-                                                <p>會員需遵守租車公司政策，如有違規紀錄，租車權利可能受限。</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingSix">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseSix"
-                                                aria-expanded="false" aria-controls="flush-collapseSix">
-                                                其他
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseSix" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <p>租車公司保留隨時修改會員條款與優惠內容的權利，最新資訊將公布於官網。</p>
-                                                <p>會員如有任何疑問，可聯繫客服中心尋求協助。</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-check form-switch mt-auto">
-                                    <input type="checkbox" class="form-check-input" role="switch" id="chk01_reg"
-                                        @click="switchActive=!switchActive"
-                                        :class="{ 'is-valid' : switchActive, 'is-invalid' : !switchActive}">
-                                    <div class="valid-feedback">您已同意上述內容</div>
-                                    <div class="invalid-feedback">須同意才可註冊</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label for="username_reg" class="form-label">帳號</label>
-                                <input type="text" class="form-control" placeholder="請輸入帳號 字數3~9" id="username_reg"
-                                    name="username_reg" v-model="username_reg"
-                                    :class="{ 'is-valid' : flag_username_reg, 'is-invalid' : !flag_username_reg}">
-                                <div class="valid-feedback">符合規定</div>
-                                <div class="invalid-feedback">{{ invalidMessage_username }}</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password_reg" class="form-label">密碼</label><i id="checkEye"
-                                    :class="[isActive ? 'fa-eye' : 'fa-eye-slash' , 'fas']" @click="isActive=!isActive">
-                                </i>
-                                <input :type="isActive ? 'password' : 'text'" class="form-control" id="floatingPassword"
-                                    placeholder="請輸入密碼 字數3~9" v-model="password_reg"
-                                    :class="{ 'is-valid' : flag_password_reg, 'is-invalid' : !flag_password_reg}">
-                                <div class="valid-feedback">符合規則</div>
-                                <div class="invalid-feedback">不符合規則</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="re_password_reg">確認密碼</label>
-                                </label><i id="checkEye" :class="[reisActive ? 'fa-eye' : 'fa-eye-slash' , 'fas']"
-                                    @click="reisActive=!reisActive">
-                                </i>
-                                <input :type="reisActive ? 'password' : 'text'" class="form-control" placeholder="請輸入密碼"
-                                    id="re_password_reg" name="re_password_reg" v-model="passwordRe_reg"
-                                    :class="{ 'is-valid' : flag_passwordRe_reg , 'is-invalid' : !flag_passwordRe_reg }">
-                                <div class="valid-feedback">相符</div>
-                                <div class="invalid-feedback">不符</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email_reg" class="form-label">E-mail</label>
-                                <input type="email" class="form-control" placeholder="請輸入電子信箱" id="email_reg"
-                                    name="email_reg" v-model="email_reg"
-                                    :class="{ 'is-valid' : flag_email_reg , 'is-invalid' : !flag_email_reg}">
-                                <div class="valid-feedback">可以使用</div>
-                                <div class="invalid-feedback">信箱有誤</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone_reg" class="form-label">手機號碼</label>
-                                <input type="text" class="form-control" placeholder="請輸入手機號碼" id="phone_reg"
-                                    name="phone_reg" v-model="phone_reg"
-                                    :class="{ 'is-valid' : flag_phone_reg , 'is-invalid' : !flag_phone_reg}">
-                                <div class="valid-feedback" id="regModal_phone_valid_feedback">符合規則</div>
-                                <div class="invalid-feedback" id="regModal_phone_invalid_feedback">手機號碼有誤</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="ok_btn_reg" @click="submiRegion">確認</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- loginModal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-303" style="color: azure;">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">會員登入</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="" class="form-label">帳號</label>
-                        <input type="text" class="form-control" placeholder="請輸入帳號" id="username_login"
-                            name="username_login" v-model="userLogin" :class="{'is-invalid' : !flag_userLogin}">
-                        <div class="invalid-feedback">請輸入帳號</div>
-                        <div class="valid-feedback"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">密碼</label>
-                        <input type="password" class="form-control" placeholder="請輸入密碼" id="password_login"
-                            name="password_login" v-model="passwordLogin" :class="{'is-invalid' : !flag_passwordLogin}">
-                        <div class="invalid-feedback">請輸入密碼</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="ok_btn_login" @click="submitLogin">確定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container mt-4">
-        <div class="row flex">
-            <div class="col-md-9">
-                <div class="input-group">
-                    <span class="input-group-text">搜尋</span>
-                    <input type="text" name="" id="" class="form-control" placeholder="搜尋關鍵字" v-model="searchItem">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <select name="" id="" class="form-select">
-                    <option value="" selected disabled>---選擇區域---</option>
-                    <option value="北區">北區</option>
-                    <option value="中區">中區</option>
-                    <option value="南區">南區</option>
-                </select>
-            </div>
-        </div>
-        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="car in filtertodo" :key="car.id">
-                <div class="card h-100 text-center">
-                    <img :src="'upload/' + car.Photo" alt="">
-                    <div class="card-body d-flex flex-column justify-content-between">
+<body class="bg-104">
+    <div id="app">
+        <!-- section01導覽頁 -->
+        <section>
+            <nav class="navbar navbar-expand-lg fw-600">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <i class="fa-solid fa-car fa-2x" style="color: rgb(231, 155, 14);"></i>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link line" aria-current="page" href="index.html"
+                                    style="color: #133E87;">首頁</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="index.html#s3" style="color: #133E87;">最新優惠</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="index.html#s4" style="color: #133E87;">推薦車輛</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="index.html#s5" style="color: #133E87;">各地服務站</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="index.html#s6" style="color: #133E87;">關於我們</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="index.html#s7" style="color: #133E87;">各區服務電話</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line" href="carlist.html" style="color: #133E87;">車輛一覽/租車</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link line d-none" id="orderlist_btn" href="orderlist.html"
+                                    style="color: #133E87;">查看訂單</a>
+                            </li>
+                            <li class="nav-item dropdown d-none" id="drop">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false" style="color: #133E87;">
+                                    管理介面
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="car-C-product.html">車輛建檔</a></li>
+                                    <li><a class="dropdown-item" href="car-R-product.html">車輛列表</a></li>
+                                    <li><a class="dropdown-item" href="member_panel.html">會員列表</a></li>
+                                    <li><a class="dropdown-item" href="orderlist_panel.html">訂單列表</a></li>
+                                    <li><a class="dropdown-item" href="imformation.html">報表</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                         <div>
-                            <h5 class="card-title" data-name="{{ car.carName }}">{{ car.carName }}</h5>
-                            <p class="card-text text-start">
-                                <span data-price="{{ car.car_Price }}">價格：{{ car.car_Price }}</span><br>
-                                <span data-count="{{ car.count }}">乘載人數：{{ car.count }}</span><br>
-                                <span data-position="{{ car.position }}">車輛所在區域：{{ car.position }}</span><br>
-                                <span data-energy="{{ car.energy }}">所使用能源：{{ car.energy }}</span><br>
-                            </p>
+                            <span class="h4 fw-900 d-none me-3" id="s02_username_showtext"
+                                style="color: #d2ab17;">會員：<span class="h3 fw-900" id="s02_username_text"
+                                    style="color: #163473;">XXX</span></span>
+                            <button class="btn btn-outline-gold fw-900 mx-2" data-bs-toggle="modal"
+                                data-bs-target="#registerModal" id="s02_reg_btn">註冊</button>
+                            <button class="btn btn-outline-heavyblue fw-600" data-bs-toggle="modal"
+                                data-bs-target="#loginModal" id="s02_login_btn">登入</button>
+                            <button class="btn btn-danger d-none fw-600" data-bs-toggle="modal"
+                                data-bs-target="#logoutModal" id="s02_logout_btn" @click="logoutbutton">登出</button>
                         </div>
-                        <button type="button" class="btn btn-primary fw-600 text-center mx-auto mt-4"
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id={{car.id}}
-                            :class="{ 'd-none' : useruid == '' }">租借</button>
                     </div>
                 </div>
+            </nav>
+        </section>
+        <!-- registerModal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-203">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">會員註冊</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="display-6 fw-900 my-3">申請會員注意事項：</div>
+                                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                                    aria-expanded="false" aria-controls="flush-collapseOne">
+                                                    會員資格
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingOne"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>申請會員需年滿 <span class="text-danger">18</span> 歲，部分高級車款需 <span
+                                                            class="text-danger">25</span> 歲以上 才可租借。</p>
+                                                    <p>需提供有效的 駕駛執照（國內或國際駕照）與 信用卡 進行驗證。</p>
+                                                    <p>會員帳戶不得轉讓或共用，<span class="text-danger">違規者將被取消會員資格。</span> </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingTwo">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                                    aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                    租車預訂與取消
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingTwo"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>所有租車預訂需提前 <span class="text-danger">24</span> 小時
+                                                        完成，特定車款可能需更長預訂時間。
+                                                    </p>
+                                                    <p>若需取消預訂，請於取車前 <span class="text-danger">12</span> 小時內
+                                                        通知，否則可能會產生取消費用。
+                                                    </p>
+                                                    <p>會員可透過官網進行預訂與修改，臨時變更須視車輛供應情況而定。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                    aria-expanded="false" aria-controls="flush-collapseThree">
+                                                    租車與使用規範
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingThree"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>取車時需攜帶 會員證、有效駕照 及 信用卡 進行身份驗證。</p>
+                                                    <p>會員應遵守當地交通法規，違規罰單與相關費用需由會員自行承擔。</p>
+                                                    <p>車輛不可轉租、非法使用或參與競速活動，違者將被追究法律責任。</p>
+                                                    <p>會員須妥善保管車輛，如有遺失車鑰、車損、內部設備損壞等，需負擔相應維修費用。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingFour">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
+                                                    aria-expanded="false" aria-controls="flush-collapseFour">
+                                                    保險與責任
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingFour"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>所有租賃車輛皆包含基本保險（第三方責任險、車損險等），可選擇額外購買全額保障方案。</p>
+                                                    <p>若發生事故，會員需立即聯絡客服並報警處理，避免私下協議，以確保保險有效性。</p>
+                                                    <p>會員如有<span class="text-danger">違約</span>行為，可能面臨額外費用或被取消會員資格。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingFive">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseFive"
+                                                    aria-expanded="false" aria-controls="flush-collapseFive">
+                                                    會員權益
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseFive" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingFive"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>會員可享 租車折扣、生日優惠、積分兌換 等專屬福利。</p>
+                                                    <p>長期會員可獲得 免費升級車款、額外駕駛人優惠 等權益。</p>
+                                                    <p>會員需遵守租車公司政策，如有違規紀錄，租車權利可能受限。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="flush-headingSix">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseSix"
+                                                    aria-expanded="false" aria-controls="flush-collapseSix">
+                                                    其他
+                                                </button>
+                                            </h2>
+                                            <div id="flush-collapseSix" class="accordion-collapse collapse"
+                                                aria-labelledby="flush-headingSix"
+                                                data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">
+                                                    <p>租車公司保留隨時修改會員條款與優惠內容的權利，最新資訊將公布於官網。</p>
+                                                    <p>會員如有任何疑問，可聯繫客服中心尋求協助。</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch mt-auto">
+                                        <input type="checkbox" class="form-check-input" role="switch" id="chk01_reg"
+                                            @click="switchActive=!switchActive"
+                                            :class="{ 'is-valid' : switchActive, 'is-invalid' : !switchActive}">
+                                        <div class="valid-feedback">您已同意上述內容</div>
+                                        <div class="invalid-feedback">須同意才可註冊</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="username_reg" class="form-label">帳號</label>
+                                    <input type="text" class="form-control" placeholder="請輸入帳號 字數3~9" id="username_reg"
+                                        name="username_reg" v-model="username_reg"
+                                        :class="{ 'is-valid' : flag_username_reg, 'is-invalid' : !flag_username_reg}">
+                                    <div class="valid-feedback">符合規定</div>
+                                    <div class="invalid-feedback">{{ invalidMessage_username }}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password_reg" class="form-label">密碼</label><i id="checkEye"
+                                        :class="[isActive ? 'fa-eye' : 'fa-eye-slash' , 'fas']"
+                                        @click="isActive=!isActive">
+                                    </i>
+                                    <input :type="isActive ? 'password' : 'text'" class="form-control"
+                                        id="floatingPassword" placeholder="請輸入密碼 字數3~9" v-model="password_reg"
+                                        :class="{ 'is-valid' : flag_password_reg, 'is-invalid' : !flag_password_reg}">
+                                    <div class="valid-feedback">符合規則</div>
+                                    <div class="invalid-feedback">不符合規則</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="re_password_reg">確認密碼</label>
+                                    </label><i id="checkEye" :class="[reisActive ? 'fa-eye' : 'fa-eye-slash' , 'fas']"
+                                        @click="reisActive=!reisActive">
+                                    </i>
+                                    <input :type="reisActive ? 'password' : 'text'" class="form-control"
+                                        placeholder="請輸入密碼" id="re_password_reg" name="re_password_reg"
+                                        v-model="passwordRe_reg"
+                                        :class="{ 'is-valid' : flag_passwordRe_reg , 'is-invalid' : !flag_passwordRe_reg }">
+                                    <div class="valid-feedback">相符</div>
+                                    <div class="invalid-feedback">不符</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email_reg" class="form-label">E-mail</label>
+                                    <input type="email" class="form-control" placeholder="請輸入電子信箱" id="email_reg"
+                                        name="email_reg" v-model="email_reg" maxlength="40"
+                                        :class="{ 'is-valid' : flag_email_reg , 'is-invalid' : !flag_email_reg}">
+                                    <div class="valid-feedback">可以使用</div>
+                                    <div class="invalid-feedback">格式有誤</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone_reg" class="form-label">手機號碼</label>
+                                    <input type="text" class="form-control" placeholder="0911123456" id="phone_reg"
+                                        name="phone_reg" maxlength="10" v-model="phone_reg"
+                                        :class="{ 'is-valid' : flag_phone_reg , 'is-invalid' : !flag_phone_reg}">
+                                    <div class="valid-feedback">{{invalidMessage_phone}}</div>
+                                    <div class="invalid-feedback">{{invalidMessage_phone}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="ok_btn_reg" @click="submiRegion">確認</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- loginModal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-303" style="color: azure;">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">會員登入</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="" class="form-label">帳號</label>
+                            <input type="text" class="form-control" placeholder="請輸入帳號" id="username_login"
+                                name="username_login" v-model="userLogin" :class="{'is-invalid' : !flag_userLogin}">
+                            <div class="invalid-feedback">請輸入帳號</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">密碼</label>
+                            <input type="password" class="form-control" placeholder="請輸入密碼" id="password_login"
+                                name="password_login" v-model="passwordLogin"
+                                :class="{'is-invalid' : !flag_passwordLogin}">
+                            <div class="invalid-feedback">請輸入密碼</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="ok_btn_login" @click="submitLogin">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4">
+            <div class="row flex">
+                <div class="col-md-12">
+                    <div class="input-group" style="margin-top: 75px;">
+                        <span class="input-group-text">搜尋</span>
+                        <input type="text" name="" id="" class="form-control" placeholder="搜尋關鍵字" v-model="searchItem">
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+                <div class="col" v-for="car in searchcar" :key="car.id">
+                    <div class="card h-100 text-center">
+                        <img :src="'upload/' + car.Photo" alt="">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title">{{ car.carName }}</h5>
+                                <p class="card-text text-start">
+                                    <span>價格：{{ car.car_Price }}</span><br>
+                                    <span>車型：{{ car.type }}</span><br>
+                                    <span>乘載人數：{{ car.count }}</span><br>
+                                    <span>所使用能源：{{ car.energy }}</span><br>
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary fw-600 text-center mx-auto mt-4"
+                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                :class="{ 'd-none' : useruid == '' }" @click="setSelectedCar(car)">
+                                租借
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content" data-id={{car.id}}>
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
                             <div class="modal-header bg-101">
                                 <h5 class="modal-title" id="staticBackdropLabel">租借車輛</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h5 class="h3 fw-900" id="s02_username_text" style="color: #163473;"></h5>
-                                <p>租借會員名稱：</p>
-                                <p>會員連絡電話：</p>
-                                <p data-name="{{ car.carName }}">車輛名稱：{{ car.carName }}</p>
-                                <p data-price="{{ car.car_Price }}">一日價格：{{ car.car_Price }}</p>
-                                <p data-count="{{ car.count }}">乘載人數：</p>
-                                <div class="d-flex gap-2">
-                                    <!--   時間差判定範例 例 01 -->
-                                    <ul class="d-flex flex-column list-unstyled">
-                                        <li>
-                                            <label for="startDate" class="mb-16 mb-md-12 mb-3">開始日期：</label>
-                                            <input type="datetime-local" id="startDate" name="startDate"
-                                                placeholder="請點選日期" class="dateSelector">
-                                        </li>
-                                        <li>
-                                            <label for="endDate" class="mb-16 mb-md-12">結束日期：</label>
-                                            <input type="datetime-local" id="endDate" name="endDate" placeholder="請點選日期"
-                                                class="dateSelector">
-                                            <p class="mt-3 text-danger d-none dateAlert">※ 結束日期須晚於開始日期</p>
-                                        </li>
-                                    </ul>
+                                <div class="d-flex justify-content-center align-items-center mb-3">
+                                    <img :src="'upload/' + selectedCar?.Photo" alt="車輛圖片"
+                                        class="img-fluid rounded shadow" style="max-height: 250px; object-fit: cover;">
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                    <button type="button" class="btn btn-primary">確定租借</button>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="px-3">
+                                            <p class="fw-bold">租借會員名稱：<span class="fw-normal">{{ orderName }}</span></p>
+                                            <p class="fw-bold">會員連絡電話：<span class="fw-normal">{{ orderPhone }}</span>
+                                            </p>
+                                            <p class="fw-bold">車輛名稱：<span class="fw-normal">{{ selectedCar?.carName
+                                                    }}</span>
+                                            </p>
+                                            <p class="fw-bold">一日價格：<span class="fw-normal">{{ selectedCar?.car_Price
+                                                    }}</span>
+                                            </p>
+                                            <p class="fw-bold">乘載人數：<span class="fw-normal">{{ selectedCar?.count
+                                                    }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="startDate" class="form-label fw-bold">開始日期：</label>
+                                            <input type="datetime-local" id="startDate" v-model="startDate"
+                                                class="form-control shadow-sm" :min="minDateTime" step="1800">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="endDate" class="form-label fw-bold">結束日期：</label>
+                                            <input type="datetime-local" id="endDate" v-model="endDate"
+                                                class="form-control shadow-sm" v-model="returnTime" :min="minDateTime">
+                                            <p class="mt-2 text-danger" v-if="dateError">※ 結束日期須晚於開始日期</p>
+                                            <p class="mt-2">總天數: <span class="fw-bold text-danger">{{ orderDays
+                                                    }}</span> 天 共<span class="fw-bold text-danger">{{ getOrderPrice()
+                                                    }}</span> 元
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label class="form-label fw-bold">付款方式：</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                                    id="flexRadioDefault1" value="信用卡" v-model="paymentCheck">
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    信用卡
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                                    id="flexRadioDefault2" value="現金" v-model="paymentCheck">
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                    現金
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                                    id="flexRadioDefault3" value="LinePay" v-model="paymentCheck">
+                                                <label class="form-check-label" for="flexRadioDefault3">
+                                                    LinePay
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded shadow">
+                                            <select id="city" class="form-select mt-3 shadow-sm" v-model="selectedCity">
+                                                <option value="" selected disabled>-----選擇縣市-----</option>
+                                                <option v-for="item in cities" :key="item" :value="item">{{ item }}
+                                                </option>
+                                            </select>
+                                            <ul class="list-group mt-3" id="mylist"
+                                                style="height: 25vh; overflow-y: auto;">
+                                                <li class="list-group-item d-flex align-items-center"
+                                                    v-for="item in filterstationData" :key="item.id"
+                                                    @click="sendStationName(item)"
+                                                    :class="{'bg-01 text-white': selectedStationId == item.id}">
+                                                    <img :src="'images/' + item.Photo" alt="站點圖片"
+                                                        class="img-fluid rounded me-3"
+                                                        style="width: 80px; height: 80px; object-fit: cover;">
+                                                    <div>
+                                                        <p class="h6 fw-bold text-primary mb-1">站名：{{ item.stationName
+                                                            }}</p>
+                                                        <p class="small text-secondary mb-0">地址：{{ item.address }}</p>
+                                                        <p class="small text-secondary">電話：{{ item.Tel }}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="checkownlist">確定租借</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
-    <div class="footer text-center bg-04 mt-3 py-2 mt-2">
-        <p class="mb-0 text-white fs-5">速馳租車 地址：台中市西屯區工業一路100號   電話：04-1234-4321     信箱：test122@test.com.tw</p>
+        <div class="footer text-center bg-04 mt-3 py-2 mt-2">
+            <p class="mb-0 text-white fs-5">速馳租車 地址：台中市西屯區工業一路100號   電話：04-1234-4321     信箱：test122@test.com.tw</p>
+        </div>
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
@@ -391,258 +489,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/zh-tw.min.js"></script>
+
     <script>
-        var flag_pcarPrice = true;
-        var flag_energy = true;
-        var flag_position = true;
-        var flag_floatingTextarea2 = true;
-        var flag_on_state = true;
-        var uid;
-        $(function () {
 
-            $("#email_reg").bind("input propertychange", function () {
-                if ($(this).val().length > 2 && $(this).val().length < 30) {
-                    $(this).removeClass("is-invalid");
-                    $(this).addClass("is-valid");
-                    flag_email_reg = true;
-                }
-                else {
-                    $(this).removeClass("is-valid");
-                    $(this).addClass("is-invalid");
-                    flag_email_reg = false;
-                }
-            });
-
-            $("#chk01_reg").change(function () {
-                console.log($(this).is(':checked'));
-                if ($(this).is(':checked')) {
-                    $(this).next().text("同意")
-                    $(this).removeClass("is-invalid");
-                    $(this).addClass("is-valid");
-                    flag_chk01_reg = true;
-                }
-                else {
-                    $(this).next().text("不同意")
-                    $(this).removeClass("is-valid");
-                    $(this).addClass("is-invalid");
-                    flag_chk01_reg = false;
-                }
-            });
-
-            $("#ok_btn_reg").click(function () {
-                if (flag_username_reg && flag_password_reg && flag_re_password_reg && flag_email_reg && flag_chk01_reg) {
-                    var JSONdata = {};
-                    JSONdata["username"] = $("#username_reg").val();
-                    JSONdata["password"] = $("#password_reg").val();
-                    JSONdata["email"] = $("#email_reg").val();
-                    console.log(JSON.stringify(JSONdata));
-
-                    $.ajax({
-                        type: "POST",
-                        url: "member_control_api_v1.php?action=register",
-                        data: JSON.stringify(JSONdata),
-                        dataType: "json",
-                        success: showdata_reg,
-                        error: function () {
-                            Swal.fire({
-                                title: "API介接錯誤",
-                                text: "member_control_api_v1.php",
-                                icon: "error"
-                            });
-                        }
-                    });
-                }
-                else {
-                    Swal.fire({
-                        title: "欄位有誤，請修正",
-                        icon: "warning",
-                        showCancelButton: false,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "確認"
-                    }).then((result) => {
-                        // if (result.isConfirmed) {
-                        //     Swal.fire({
-                        //         title: "Deleted!",
-                        //         text: "Your file has been deleted.",
-                        //         icon: "success"
-                        //     });
-                        // }
-                    });
-                }
-            });
-
-            $("#username_login").bind("input propertychange", function () {
-                if ($(this).val().length > 0) {
-                    $(this).removeClass("is-invalid");
-                    flag_username_login = true;
-                }
-                else {
-                    $(this).addClass("is-invalid");
-                    lag_username_login = false;
-                }
-            });
-
-            $("#password_login").bind("input propertychange", function () {
-                if ($(this).val().length > 0) {
-                    $(this).removeClass("is-invalid");
-                    flag_password_login = true;
-                }
-                else {
-                    $(this).addClass("is-invalid");
-                    flag_password_login = false;
-                }
-            });
-
-            $("#ok_btn_login").click(function () {
-                if (flag_username_login && flag_password_login) {
-                    //傳遞後端API執行登入行為
-                    //input:{"username" : "owner","password" : "123456"}
-                    var JSONdata = {};
-                    JSONdata["Username"] = $("#username_login").val();
-                    JSONdata["Password"] = $("#password_login").val();
-                    console.log(JSON.stringify(JSONdata));
-
-                    $.ajax({
-                        type: "POST",
-                        url: "member_control_api_v1.php?action=login",
-                        data: JSON.stringify(JSONdata),
-                        dataType: "json",
-                        success: showdata_login,
-                        error: function () {
-                            Swal.fire({
-                                title: "API介接錯誤",
-                                text: "member_control_api_v1.php",
-                                icon: "error"
-                            });
-                        }
-                    });
-                }
-                else {
-                    Swal.fire({
-                        title: "輸入錯誤",
-                        text: "請輸入帳號和密碼!",
-                        icon: "error"
-                    });
-                }
-            });
-
-            //登出
-            $("#s02_logout_btn").click(function () {
-                Swal.fire({
-                    title: "確定要登出嗎?",
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: "確認",
-                    denyButtonText: `取消`,
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // 當用戶點擊「確認」時，執行登出操作
-                        setCookie("Uid01", "", 7);
-                        location.href = "index.html";
-                        $("#drop").addClass("d-none");
-                        $(".borrow-btn").addClass("d-none");
-                    } else if (result.isDenied) {
-                        // 當用戶點擊「取消」時，什麼也不做
-                        console.log("取消登出");
-                    }
-                })
-            });
-
+        window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
         });
-
-        function showdata_reg(data) {
-            console.log(data);
-            if (data.state) {
-                Swal.fire({
-                    title: data.message,
-                    icon: "success"
-                }).then((result) => { //成功後跳轉原頁面
-                    if (result.isConfirmed) {
-                        location.href = "carlist.html";
-                    }
-                });
-            }
-            else {
-                Swal.fire({
-                    title: data.message,
-                    icon: "error"
-                });
-            }
-        }
-
-        function showdata_login(data) {
-            console.log(data);
-            if (data.state) {
-                console.log(data.data.Role);
-                if (data.data.Role === "管理員") {
-                    console.log("歡迎管理員登入！");
-                    $("#drop").removeClass("d-none");
-                }
-                Swal.fire({
-                    title: data.message,
-                    icon: "success"
-                }).then((result) => {
-                    // location.href = "carlist.html";
-                    if (result.isConfirmed) {
-                        //loginModal消失
-                        $("#loginModal").modal("hide");
-
-                        //顯示歡迎訊息
-                        $("#s02_username_showtext").removeClass("d-none");
-                        $("#s02_username_text").text(data.data.Username)
-
-                        //隱藏註冊與按鈕
-                        $("#s02_reg_btn").addClass("d-none");
-                        $("#s02_login_btn").addClass("d-none");
-
-                        //登入後顯示登出按鈕
-                        $("#s02_logout_btn").removeClass("d-none");
-
-                        //uid驗整碼寫入cookie
-                        setCookie("Uid01", data.data.Uid01, 7);
-                    }
-                });
-            }
-            else {
-                Swal.fire({
-                    title: data.message,
-                    icon: "error"
-                });
-            }
-        }
-
-        //from w3school
-        function setCookie(cname, cvalue, exdays) {
-            const d = new Date();
-            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            let expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-            window.dispatchEvent(new CustomEvent("userLoggedIn"));
-        }
-
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-
 
         const App = {
             data() {
                 return {
-                    cacheItem: [],  // 存放後端資料
-                    searchItem: '', // 綁定搜尋欄
                     useruid: '',
                     username_reg: '',
                     flag_username_reg: false,
@@ -662,13 +526,72 @@
                     userLogin: '',
                     flag_userLogin: false,
                     passwordLogin: '',
-                    flag_passwordLogin: false
+                    flag_passwordLogin: false,
+                    selectedCar: null,
+                    startDate: '',
+                    endDate: '',
+                    cacheItem: [],  // 存放後端資料
+                    searchItem: '', // 綁定搜尋欄
+                    carData: [],
+                    orderName: '',
+                    orderPhone: '',
+                    paymentCheck: '現金',
+                    cities: [], // 存放城市列表
+                    selectedCity: "",
+                    stationData: [],
+                    filterstationData: [],
+                    selectedStationId: null, // 記錄選中的站點 ID
+                    searchItem: '',
+                    orderDays: 1,
+                    orderPrice: 1000,
                 }
             },
+            created() {
+                const vm = this;
+                axios.get('car_control_api.php?action=carlist')
+                    .then(function (response) {
+                        // handle success
+                        console.log(response.data);
+                        vm.carData = response.data.data;
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .finally(function () {
+                        // always executed
+                    });
+                axios.get('station_position.php?action=getalldata')
+                    .then(function (response) {
+                        // handle success
+                        console.log(response.data);
+                        vm.stationData = response.data.data;
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .finally(function () {
+                        // always executed
+                    });
+            },
             watch: {
+                startDate: "updateOrderDays",
+                endDate: "updateOrderDays",
                 username_reg: function (newValue) {
                     const vm = this;
                     console.log(newValue);
+
+                    // 當使用者清空輸入框時，重置錯誤訊息
+                    if (newValue.length < 3) {
+                        vm.invalidMessage_username = "請依照規範輸入使用者名稱";
+                        vm.flag_username_reg = false;
+                        return;
+                    } else if (newValue.length > 9) {
+                        vm.invalidMessage_username = "請依照規範輸入使用者名稱";
+                        vm.flag_username_reg = false;
+                    }
+
                     if (newValue.length > 2 && newValue.length < 10) {
                         var JSONdata = {};
                         JSONdata["Username"] = vm.username_reg;
@@ -696,6 +619,7 @@
                 password_reg: function (newValue) {
                     const vm = this;
                     console.log(newValue);
+                    vm.flag_passwordRe_reg = false;
                     if (newValue.length > 2 && newValue.length < 10) {
                         vm.flag_password_reg = true;
                     }
@@ -716,7 +640,8 @@
                 email_reg: function (newValue) {
                     const vm = this;
                     console.log(newValue);
-                    if (/@/.test(newValue) && newValue.length >= 2 && newValue.length <= 30) {
+                    const rule = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                    if (rule.test(newValue) && newValue.length <= 40) {
                         vm.flag_email_reg = true;
                     }
                     else {
@@ -725,19 +650,9 @@
                 },
                 phone_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
-                    // 移除非數字與 "-" 的字元
-                    newValue = newValue.replace(/[^0-9-]/g, "");
-                    // 限制長度最多 12 個字符
-                    if (newValue.length > 12) {
-                        newValue = newValue.substring(0, 12);
-                    }
-                    // 更新 Vue data 中的 phone_reg
-                    vm.phone_reg = newValue;
-                    // 驗證是否符合規則 (只包含數字和 "-"，且長度 10~12)
-                    if (/^[\d-]+$/.test(newValue) && newValue.length >= 10 && newValue.length <= 12) {
-                        var JSONdata = {};
-                        JSONdata["Phone"] = vm.phone_reg;
+                    const rule = /^09\d{8}$/;
+                    if (rule.test(newValue) && newValue.length === 10) {
+                        var JSONdata = { Phone: newValue };
                         console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
@@ -759,6 +674,10 @@
 
                             }
                         });
+                    } else {
+                        // **如果 newValue 不是 10 碼，清除狀態**
+                        vm.flag_phone_reg = false;
+                        vm.invalidMessage_phone = "格式錯誤或已被註冊過";
                     }
                 },
                 userLogin: function (newValue) {
@@ -781,9 +700,19 @@
                     }
 
                 },
+                selectedCity(newValue) {
+                    const vm = this;
+                    console.log(newValue);
+                    vm.filterstationData = [];
+                    vm.stationData.forEach((item) => {
+                        if (item.cityName == vm.selectedCity) {
+                            vm.filterstationData.push(item);
+                        }
+                    });
+                }
             },
             computed: {
-                filtertodo() {
+                searchcar() {
                     return this.cacheItem // 從 `cacheItem` 中過濾出符合條件的車輛
                         .filter(car => car.on_state === "上架") // 篩選出狀態為 "上架" 的車輛
                         .filter(car => { // 對每輛車進行以下篩選
@@ -793,15 +722,37 @@
                                 car.carName.toLowerCase().includes(searchTerm) || // 如果有搜尋關鍵字，檢查車名是否包含搜尋關鍵字
                                 car.position.toLowerCase().includes(searchTerm) || // 檢查車輛所在區域是否包含搜尋關鍵字
                                 car.count.toString().includes(searchTerm) || // 檢查乘載人數（轉為字串後）是否包含搜尋關鍵字
-                                car.energy.toLowerCase().includes(searchTerm)   // 檢查使用能源是否包含搜尋關鍵字
+                                car.energy.toLowerCase().includes(searchTerm) ||  // 檢查使用能源是否包含搜尋關鍵字
+                                car.type.toLowerCase().includes(searchTerm)
                             );
                         });
-                }
+                },
+                dateError() {
+                    const vm = this;
+                    return vm.startDate && vm.endDate && vm.startDate >= vm.endDate;
+                },
+                serch() {
+                    //處理搜尋功能
+                    if (vm.searchItem) {
+                        filterdata = filterdata.filter(item => item.title.toLowerCase().includes(vm.searchItem.toLowerCase()));
+                    }
+                },
+                orderDays() {
+                    const vm = this;
+                    if (!vm.startDate || !vm.endDate) {
+                        return 1; // 預設最少 1 天
+                    }
+                    const startDate = new Date(vm.startDate);
+                    const endDate = new Date(vm.endDate);
+                    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                    return days > 0 ? days : 1; // 確保最少為 1 天
+                },
+
             },
             methods: {
                 async fetchCars() {
                     try {
-                        const response = await axios.get('https://stone.bnsw.tech/CAR_PROJECT/car_control_api.php?action=carlist');
+                        const response = await axios.get('car_control_api.php?action=carlist');
 
                         // 確保 API 回傳的 data 屬性是陣列
                         if (response.data && Array.isArray(response.data.data)) {
@@ -829,31 +780,6 @@
                     }
                     console.log(typeof this.useruid, this.useruid === "");
                 },
-                checkUid01() {
-                    //確認uid01是否存在
-                    if (getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
-                        var JSONdata = {};
-                        JSONdata["uid01"] = getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
-
-                        $.ajax({
-                            type: "POST",
-                            url: "member_control_api_v1.php?action=checkuid",
-                            data: JSON.stringify(JSONdata),
-                            dataType: "json",
-                            success: showdata_checkuid,
-                            error: function () {
-                                Swal.fire({
-                                    title: "API介接錯誤?",
-                                    icon: "error",
-                                    text: "member_control_api_v1.php",
-                                });
-                            }
-                        });
-                    }
-                },
                 submiRegion() {
                     const vm = this;
                     if (vm.flag_username_reg && vm.flag_password_reg && vm.flag_email_reg && vm.flag_phone_reg && vm.switchActive) {
@@ -869,7 +795,25 @@
                             url: "member_control_api_v1.php?action=register",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
-                            success: showdata_reg,
+                            success: function (data) {
+                                console.log(data);
+                                if (data.state) {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "success"
+                                    }).then((result) => { //成功後跳轉原頁面
+                                        if (result.isConfirmed) {
+                                            location.href = "carlist.html";
+                                        }
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
                             error: function () {
                                 Swal.fire({
                                     title: "API介接錯誤",
@@ -904,7 +848,47 @@
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             contentType: "application/json",
-                            success: showdata_login,
+                            success: function (data) {
+                                console.log(data);
+                                if (data.state) {
+                                    console.log(data.data.Role);
+                                    if (data.data.Role === "管理員") {
+                                        console.log("歡迎管理員登入！");
+                                        $("#drop").removeClass("d-none");
+                                    }
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "success"
+                                    }).then((result) => {
+                                        // location.href = "carlist.html";
+                                        if (result.isConfirmed) {
+                                            //loginModal消失
+                                            $("#loginModal").modal("hide");
+
+                                            //顯示歡迎訊息
+                                            $("#s02_username_showtext").removeClass("d-none");
+                                            $("#orderlist_btn").removeClass("d-none");
+                                            $("#s02_username_text").text(data.data.Username)
+
+                                            //隱藏註冊與按鈕
+                                            $("#s02_reg_btn").addClass("d-none");
+                                            $("#s02_login_btn").addClass("d-none");
+
+                                            //登入後顯示登出按鈕
+                                            $("#s02_logout_btn").removeClass("d-none");
+
+                                            //uid驗整碼寫入cookie
+                                            vm.setCookie("Uid01", data.data.Uid01, 7);
+                                        }
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
                             error: function (xhr, status, error) {
                                 console.log("AJAX Error:", xhr.responseText);
                                 Swal.fire({
@@ -924,6 +908,7 @@
                     }
                 },
                 logoutbutton() {
+                    const vm = this;
                     Swal.fire({
                         title: "確定要登出嗎?",
                         showDenyButton: true,
@@ -934,7 +919,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // 當用戶點擊「確認」時，執行登出操作
-                            setCookie("Uid01", "", 7);
+                            vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
                         } else if (result.isDenied) {
@@ -944,11 +929,12 @@
                     })
                 },
                 runcookie() {
-                    if (getCookie("Uid01")) {
+                    const vm = this;
+                    if (vm.getCookie("Uid01")) {
                         //將uid01傳遞至後端API執行驗證
                         //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
-                        JSONdata["uid01"] = getCookie("Uid01");
+                        JSONdata["uid01"] = vm.getCookie("Uid01");
                         console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
@@ -956,7 +942,41 @@
                             url: "member_control_api_v1.php?action=checkuid",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
-                            success: showdata_checkuid,
+                            success: function (data) {
+                                console.log(data.data.Username);
+                                vm.orderName = data.data.Username;
+                                vm.orderPhone = data.data.Phone;
+                                if (data.state) {
+                                    if (data.data.Role === "管理員") {
+                                        console.log("歡迎管理員登入！");
+                                        $("#drop").removeClass("d-none");
+                                        $("#orderlist_btn").addClass("d-none");
+                                        //顯示歡迎訊息
+                                        $("#s02_username_showtext").removeClass("d-none");
+                                        $("#s02_username_text").text(data.data.Username)
+
+                                        //隱藏註冊與按鈕
+                                        $("#s02_reg_btn").addClass("d-none");
+                                        $("#s02_login_btn").addClass("d-none");
+
+                                        //登入後顯示登出按鈕
+                                        $("#s02_logout_btn").removeClass("d-none");
+                                    }
+                                    else {
+                                        //顯示歡迎訊息
+                                        $("#s02_username_showtext").removeClass("d-none");
+                                        $("#orderlist_btn").removeClass("d-none");
+                                        $("#s02_username_text").text(data.data.Username)
+
+                                        //隱藏註冊與按鈕
+                                        $("#s02_reg_btn").addClass("d-none");
+                                        $("#s02_login_btn").addClass("d-none");
+
+                                        //登入後顯示登出按鈕
+                                        $("#s02_logout_btn").removeClass("d-none");
+                                    }
+                                }
+                            },
                             error: function () {
                                 Swal.fire({
                                     title: "API介接錯誤?",
@@ -966,17 +986,196 @@
                             }
                         });
                     }
-                }
+                },
+                setSelectedCar(car) {
+                    const vm = this;
+                    vm.selectedCar = car;
+                },
+                filterCarsByRegion(region) {
+                    // 根據區域過濾車輛
+                    return this.searchcar.filter(car => car.position === region);
+                },
+                submiOrder() {
+                    const vm = this;
+                    const minTimeTwoDaysLater = moment().add(2, 'days').startOf('day');
+                    const formatted = minTimeTwoDaysLater.format('YYYY-MM-DDTHH:mm');
+
+                    // 檢查日期錯誤
+                    if (vm.dateError) {
+                        alert('結束日期須晚於開始日期');
+                        return;
+                    }
+
+                    // 檢查其他必要的欄位
+                    if (vm.orderName && vm.orderPhone && vm.selectedCar.carName && vm.startDate && vm.endDate && vm.paymentCheck) {
+                        const orderNumber = vm.generateOrderNumber(); // 使用 generateOrderNumber 方法生成唯一訂單號
+                        const startDate = new Date(vm.startDate);
+                        const endDate = new Date(vm.endDate);
+                        vm.orderDays = Math.max(1, (endDate - startDate) / (1000 * 60 * 60 * 24));
+
+                        var JSONdata = {
+                            order_number: orderNumber, // 在這裡確保把訂單號設置進來
+                            Username: vm.orderName,
+                            Phone: vm.orderPhone,
+                            carName: vm.selectedCar.carName,
+                            carNumber: vm.selectedCar.car_Number,
+                            totalPrice: Math.floor(vm.selectedCar.car_Price * vm.orderDays), // 計算總價
+                            station: vm.selectedStation,
+                            borrowTime: vm.startDate,
+                            returnTime: vm.endDate,
+                            payment_method: vm.paymentCheck
+                        };
+
+                        console.log("訂單數據:", JSON.stringify(JSONdata));
+
+                        // 發送訂單請求
+                        $.ajax({
+                            type: "POST",
+                            url: "orderlist_api.php?action=create", // 訂單創建 API
+                            data: JSON.stringify(JSONdata),
+                            dataType: "json",
+                            success: function (data) {
+
+                                console.log(data);
+                                if (data.state) {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "success"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.href = "orderlist.html"; // 成功後跳轉頁面
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    title: "API介接錯誤",
+                                    text: "orderlist_api.php?action=create",
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    }
+                },
+                fetchCities() {
+                    const vm = this;
+                    axios.get('station_position.php?action=getcity')
+                        .then(response => {
+                            console.log("獲取的城市數據:", response.data);
+                            vm.cities = response.data.data;
+                        })
+                        .catch(error => {
+                            console.error("請求錯誤:", error);
+                        });
+                },
+                setCookie(cname, cvalue, exdays) {
+                    const d = new Date();
+                    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                    let expires = "expires=" + d.toUTCString();
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                    window.dispatchEvent(new CustomEvent("userLoggedIn"));
+                },
+                getCookie(cname) {
+                    let name = cname + "=";
+                    let ca = document.cookie.split(';');
+                    for (let i = 0; i < ca.length; i++) {
+                        let c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                },
+                sendStationName(item) {
+                    const vm = this;
+                    if (item && item.stationName) {
+                        console.log("選擇的站點:", item.stationName);
+                        vm.selectedStation = item.stationName;
+                        // 這裡你可以進行其他操作，比如發送請求或更新界面
+                        vm.selectedStationId = item.id; // 設定選中的站點 ID
+                    } else {
+                        console.error("未找到有效的站點資料");
+                    }
+                },
+                checkownlist() {
+                    const vm = this;
+                    var JSONdata = {};
+                    JSONdata["Username"] = vm.orderName;
+                    console.log(JSON.stringify(JSONdata));
+                    $.ajax({
+                        type: "GET",
+                        url: `orderlist_api.php?action=orderCheck&Username=${vm.orderName}`,
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            // 假設 data.state 為是否有訂單的判斷依據
+                            if (!data.state) {
+                                Swal.fire({
+                                    title: "您已經有訂單了",
+                                    icon: "error"
+                                });
+                            } else {
+                                // 沒有訂單，則執行訂單提交
+                                vm.submiOrder();
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: "API介接錯誤?",
+                                icon: "error",
+                                text: "orderlist_api.php?action=ownlist",
+                            });
+                        }
+                    });
+
+                },
+                generateOrderNumber() {
+                    const timestamp = new Date().getTime(); // 取得當前時間戳（毫秒）
+                    const randomNumber = Math.floor(Math.random() * 1000); // 生成 0 到 999 之間的隨機數字
+                    return `ORD-${timestamp}-${randomNumber}`; // 合併成一個訂單號
+                },
+                updateOrderDays() {
+                    const vm = this;
+                    if (!vm.startDate || !vm.endDate) {
+                        vm.orderDays = 1;
+                        return;
+                    }
+                    const startDate = new Date(vm.startDate);
+                    const endDate = new Date(vm.endDate);
+                    vm.orderDays = Math.max(1, Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)));
+                },
+                getOrderPrice() {
+                    if (!this.selectedCar || !this.selectedCar.car_Price) {
+                        return 0;
+                    }
+                    return Math.floor(this.selectedCar.car_Price * this.orderDays);
+                },
+
             },
             mounted() {
-                this.fetchCars(); // 頁面載入時自動讀取資料
-                this.getUid01();
-                window.addEventListener("userLoggedIn", this.getUid01);
-                this.runcookie();
+                const vm = this;
+                vm.fetchCars(); // 頁面載入時自動讀取資料
+                vm.getUid01();
+                window.addEventListener("userLoggedIn", vm.getUid01);
+                vm.runcookie();
+                vm.fetchCities();
+                const minTime = moment().add(2, 'days').startOf('day');
+                vm.minDateTime = minTime.format('YYYY-MM-DDTHH:mm');
+
             },
             beforeUnmount() {
+                const vm = this;
                 // 確保組件卸載時清除事件監聽
-                window.removeEventListener("userLoggedIn", this.getUid01);
+                window.removeEventListener("userLoggedIn", vm.getUid01);
             },
         }
         Vue.createApp(App).mount('#app');

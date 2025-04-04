@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>車輛管理介面-車輛列表</title>
+    <title>管理介面-車輛列表</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/test.css">
     <style>
@@ -20,129 +20,135 @@
     </style>
 </head>
 
-<body class="bg-104" id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-203">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">管理介面</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link line" href="index.html">首頁</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link line" href="member_panel.html">會員列表</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link line" aria-current="page" href="car-C-product.html">車輛建檔</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="car-R-product.html">車輛列表</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="imformation.html">報表</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
-                        class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
-                <button class="btn btn-danger d-none" id="s02_logout_btn" @click="logoutbutton">登出</button>
-            </div>
-        </div>
-    </nav>
-    <div class="container mt-4">
-        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3 text-center" id="mydata">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="#" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title" data-name="車輛名稱">XXXX</h5>
-                        <h6 class="card-subtitle mb-2" data-number="車牌號碼">車牌號碼：XXXX</h6>
-                        <h6 data-onstate="狀態" class="text-danger fw-600">狀態：XXXX</h6>
-                        <p class="card-text text-start">
-                            <span class="d-none" data-id="編號">編號XXX</span>
-                            <span data-price="價格">價格：XXXX</span><br>
-                            <span data-count="乘載人數">乘載人數：XXXXX</span><br>
-                            <span data-position="車輛所在區域">車輛所在區域：XXXX</span><br>
-                            <span data-energy="所使用能源">所使用能源：XXXX</span><br>
-                            <span data-remark="備註">備註：XXXX</span><br>
-                            <span data-createTime="建檔時間">建檔時間：XXXX</span>
-                        </p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
-                            id="update_btn">更新</button>
-                        <button class="btn btn-danger" id="delete_btn">刪除</button>
+<body class="bg-104">
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-203">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">管理介面</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link line" href="index.html">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link line" href="member_panel.html">會員列表</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link line" aria-current="page" href="car-C-product.html">車輛建檔</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="car-R-product.html">車輛列表</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link line" href="imformation.html">報表</a>
+                        </li>
+                        <li>
+                            <a class="nav-link line" href="orderlist_panel.html">訂單列表</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <span class="h4 fw-900 me-3 d-none" id="s02_username_showtext" style="color: #d2ab17;">管理帳號: <span
+                                class="h3" id="s02_username_text" style="color: #163473;">XXX</span></span>
+                        <button class="btn btn-danger d-none" id="s02_logout_btn" @click="logoutbutton">登出</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row row-cols-1 row-cols-md-4 row-cols-sm-2 g-4 mt-3 text-center" id="mydata">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="#" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title" data-name="車輛名稱">XXXX</h5>
+                            <h6 class="card-subtitle mb-2" data-number="車牌號碼">車牌號碼：XXXX</h6>
+                            <h6 data-onstate="狀態" class="text-danger fw-600">狀態：XXXX</h6>
+                            <p class="card-text text-start">
+                                <span class="d-none" data-id="編號">編號XXX</span>
+                                <span data-price="價格">價格：XXXX</span><br>
+                                <span data-count="乘載人數">乘載人數：XXXXX</span><br>
+                                <span data-position="車輛所在區域">車輛所在區域：XXXX</span><br>
+                                <span data-energy="所使用能源">所使用能源：XXXX</span><br>
+                                <span data-remark="備註">備註：XXXX</span><br>
+                                <span data-createTime="建檔時間">建檔時間：XXXX</span>
+                            </p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+                                id="update_btn">更新</button>
+                            <button class="btn btn-danger" id="delete_btn">刪除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- updateModal -->
-        <div class="modal fade modal-lg" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-bg-warning">
-                        <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">車輛資訊更新</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="carName" class="form-label">車輛名稱</label>
-                                    <input type="text" class="form-control" name="carName" disabled id="carName">
+            <!-- updateModal -->
+            <div class="modal fade modal-lg" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-bg-warning">
+                            <h1 class="modal-title fs-5 fw-900" id="exampleModalLabel">車輛資訊更新</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="carName" class="form-label">車輛名稱</label>
+                                        <input type="text" class="form-control" name="carName" disabled id="carName">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="carNumber" class="form-label">車牌號碼</label>
+                                        <input type="text" class="form-control" name="carNumber" disabled
+                                            id="carNumber">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="carNumber" class="form-label">車牌號碼</label>
-                                    <input type="text" class="form-control" name="carNumber" disabled id="carNumber">
-                                </div>
+                            <div class="mb-3">
+                                <label for="pcarPrice" class="form-label">價格</label>
+                                <input type="number" class="form-control is-valid" name="pcarPrice" id="pcarPrice">
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback">不得超過100000</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">狀態</label>
+                                <select class="form-select is-valid" aria-label="Default select example" id="on_state"
+                                    name="on_state">
+                                    <option selected disabled>請選擇狀態</option>
+                                    <option value="下架">下架</option>
+                                    <option value="借出">借出</option>
+                                    <option value="上架">上架</option>
+                                </select>
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">車輛所在區域</label>
+                                <select class="form-select is-valid" aria-label="Default select example" id="position"
+                                    name="position">
+                                    <option value="" class="text-center" selected disabled>-----請選擇所在區域-----</option>
+                                    <option value="北區">北區</option>
+                                    <option value="中區">中區</option>
+                                    <option value="南區">南區</option>
+                                </select>
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" placeholder="備註： " id="floatingTextarea2"
+                                    style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">備註：</label>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="pcarPrice" class="form-label">價格</label>
-                            <input type="number" class="form-control is-valid" name="pcarPrice" id="pcarPrice">
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback">不得超過100000</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="updateModal_ok_btn">確認</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">狀態</label>
-                            <select class="form-select is-valid" aria-label="Default select example" id="on_state"
-                                name="on_state">
-                                <option selected disabled>請選擇狀態</option>
-                                <option value="下架">下架</option>
-                                <option value="借出">借出</option>
-                                <option value="上架">上架</option>
-                            </select>
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">車輛所在區域</label>
-                            <select class="form-select is-valid" aria-label="Default select example" id="position"
-                                name="position">
-                                <option value="" class="text-center" selected disabled>-----請選擇所在區域-----</option>
-                                <option value="北區">北區</option>
-                                <option value="中區">中區</option>
-                                <option value="南區">南區</option>
-                            </select>
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="備註： " id="floatingTextarea2"
-                                style="height: 100px"></textarea>
-                            <label for="floatingTextarea2">備註：</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" id="updateModal_ok_btn">確認</button>
                     </div>
                 </div>
             </div>
@@ -501,7 +507,7 @@
                     }
                 },
             },
-            mounted(){
+            mounted() {
                 this.checkUid01();
             }
         }

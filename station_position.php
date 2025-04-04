@@ -56,6 +56,29 @@ function get_alldata()
     $conn->close();
 }
 
+function get_citydata()
+{
+    $conn = create_connection();
+
+    // 使用 DISTINCT 過濾重複的 cityName
+    $stmt = $conn->prepare("SELECT cityName FROM station_position GROUP BY cityName ORDER BY MIN(id) ASC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $mydata = array();
+        while ($row = $result->fetch_assoc()) {
+            $mydata[] = $row['cityName'];  // 只取出 cityName
+        }
+        respond(true, "取得所有不重複的城市名稱成功", $mydata);
+    } else {
+        // 查無資料
+        respond(false, "查無資料");
+    }
+    $stmt->close();
+    $conn->close();
+}
+
 function count_station()
 {
     $conn = create_connection();
@@ -90,6 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'count':
             count_station();
+            break;
+        case 'getcity':
+            get_citydata();
             break;
         default:
             respond(false, "無效的操作");
