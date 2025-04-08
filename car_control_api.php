@@ -1,12 +1,11 @@
 <?php
-const DB_SERVER   = "192.168.2.3";
-const DB_USERNAME = "stone_test";
-const DB_PASSWORD = "Pks2pZD9LQCYLpCI75k5fw";
-const DB_NAME     = "stone_test";
+const DB_SERVER   = "";
+const DB_USERNAME = "";
+const DB_PASSWORD = "";
+const DB_NAME     = "";
 
 header('Content-Type: application/json');
 
-//建立連線
 function create_connection()
 {
     $conn = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -17,22 +16,17 @@ function create_connection()
     return $conn;
 }
 
-//取得JSON的資料
 function get_json_input()
 {
     $data = file_get_contents("php://input");
     return json_decode($data, true);
 }
 
-
-//回復JOSN訊息
-//state: 狀態(成功或失敗) message: 訊息內容 data: 回傳資料(可有可無)
 function respond($state, $message, $data = null)
 {
     echo json_encode(["state" => $state, "message" => $message, "data" => $data]);
 }
 
-// 車輛建檔
 function create_car()
 {
     $input = get_json_input();
@@ -68,7 +62,6 @@ function create_car()
     }
 }
 
-// 車牌重複判定
 function num_check()
 {
     $input = get_json_input();
@@ -78,7 +71,7 @@ function num_check()
             $conn = create_connection();
 
             $stmt = $conn->prepare("SELECT car_Number FROM car WHERE car_Number = ?");
-            $stmt->bind_param("s", $p_number); //一定要傳遞變數
+            $stmt->bind_param("s", $p_number);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -99,7 +92,6 @@ function num_check()
     }
 }
 
-// 車輛清單
 function list_car()
 {
     $conn = create_connection();
@@ -115,14 +107,12 @@ function list_car()
         }
         respond(true, "取得所有車輛資料成功", $mydata);
     } else {
-        //查無資料
         respond(false, "查無資料");
     }
     $stmt->close();
     $conn->close();
 }
 
-// 車輛數量統計
 function count_car()
 {
     $conn = create_connection();
@@ -139,7 +129,6 @@ function count_car()
     $conn->close();
 }
 
-// 車輛更新
 function update_car()
 {
     $input = get_json_input();
@@ -175,7 +164,6 @@ function update_car()
     }
 }
 
-// 車輛刪除
 function delete_car()
 {
     $input = get_json_input();
@@ -185,7 +173,7 @@ function delete_car()
             $conn = create_connection();
 
             $stmt = $conn->prepare("DELETE FROM car WHERE id = ?");
-            $stmt->bind_param("i", $p_id); //一定要傳遞變數
+            $stmt->bind_param("i", $p_id); 
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows === 1) {
@@ -206,8 +194,6 @@ function delete_car()
         respond(false, "欄位錯誤");
     }
 }
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_GET['action'] ?? '';
