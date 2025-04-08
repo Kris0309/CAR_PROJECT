@@ -15,7 +15,6 @@ if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "" && isset($_P
     if ($_FILES['file']['type'] == 'image/jpeg' || $_FILES['file']['type'] == 'image/png') {
         $filename = date("YmdHis") . "_" . $_FILES['file']['name'];
         $id = $_POST["id"];
-
         $location = "upload/" . $filename;
         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
             $datainfo = array();
