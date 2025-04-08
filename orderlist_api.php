@@ -90,7 +90,6 @@ function count_yetlist()
 {
     $conn = create_connection();
 
-    // 正確的 SQL 語法，過濾 "未完成" 的訂單
     $sql = "SELECT COUNT(*) AS count_yetlistState FROM orderlist WHERE listState = '未完成'";
 
     $result = $conn->query($sql);
@@ -109,7 +108,6 @@ function count_donelist()
 {
     $conn = create_connection();
 
-    // 正確的 SQL 語法，過濾 "已完成" 的訂單
     $sql = "SELECT COUNT(*) AS count_donelistState FROM orderlist WHERE listState = '已完成'";
 
     $result = $conn->query($sql);
@@ -129,7 +127,6 @@ function user_order_check()
     $username = $_GET["Username"];
     $conn = create_connection();
 
-    // 使用預處理語句來避免 SQL 注入
     $sql = "SELECT COUNT(*) AS order_count FROM orderlist WHERE Username = ? AND listState = '未完成'";
     $stmt = $conn->prepare($sql);
 
@@ -138,7 +135,6 @@ function user_order_check()
         return;
     }
 
-    // 綁定參數並執行查詢
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -154,7 +150,6 @@ function user_order_check()
         respond(false, "查詢失敗: " . $conn->error);
     }
 
-    // 釋放資源
     $stmt->close();
     $conn->close();
 }
@@ -164,7 +159,6 @@ function user_own_order()
     $username = $_GET["Username"];
     $conn = create_connection();
 
-    // 使用預處理語句來避免 SQL 注入
     $sql = "SELECT * FROM orderlist WHERE Username = ?";
     $stmt = $conn->prepare($sql);
 
@@ -173,7 +167,6 @@ function user_own_order()
         return;
     }
 
-    // 綁定參數
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -188,12 +181,10 @@ function user_own_order()
         respond(false, "查無資料");
     }
 
-    // 釋放資源
     $stmt->close();
     $conn->close();
 }
 
-// 更新付款狀態
 function edit_payment_status()
 {
     $input = get_json_input();
@@ -226,7 +217,6 @@ function edit_payment_status()
     }
 }
 
-// 更新訂單狀態
 function edit_order_state()
 {
     $input = get_json_input();
@@ -268,7 +258,7 @@ function delete_order()
             $conn = create_connection();
 
             $stmt = $conn->prepare("DELETE FROM orderlist WHERE ID = ?");
-            $stmt->bind_param("i", $p_id); //一定要傳遞變數
+            $stmt->bind_param("i", $p_id);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows === 1) {
@@ -295,7 +285,6 @@ function count_doneOrder_month()
     $year = $_GET['year'] ?? '';
     $conn = create_connection();
 
-    // 使用提供的年份生成報表，查詢該年份每個月的已完成訂單收入總額
     $sql = "SELECT 
                 DATE_FORMAT(Create_at, '%Y-%m') AS month, 
                 SUM(totalPrice) AS total_revenue 
@@ -310,11 +299,10 @@ function count_doneOrder_month()
     if ($result) {
         $monthlyReport = [];
 
-        // 將查詢結果存入陣列
         while ($row = $result->fetch_assoc()) {
             $monthlyReport[] = [
                 'month' => $row['month'],
-                'total_revenue' => $row['total_revenue'] ?? 0  // 如果沒有收入，設為 0
+                'total_revenue' => $row['total_revenue'] ?? 0
             ];
         }
 
