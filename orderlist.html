@@ -28,13 +28,11 @@
             width: 100%;
             z-index: 100;
             background-color: rgba(203, 220, 235, 1);
-            /* 初始不透明 */
             transition: background-color 0.3s ease-in-out;
         }
 
         .navbar.scrolled {
             background-color: rgba(203, 220, 235, 0.5);
-            /* 滾動後變半透明 */
         }
 
         #mylist .list-group-item {
@@ -131,7 +129,6 @@
                     <div class="col-md-6" v-for="item in ownlist" :key="item.id">
                         <ul class="list-group mt-2" id="mylist">
                             <li class="list-group-item">
-                                <!-- 訂單編號 -->
                                 <p class="h5 fw-bold text-primary">
                                     訂單編號：{{ item.order_number }}
                                 </p>
@@ -141,7 +138,6 @@
                                                 item.station }}</span></p>
                                     </div>
                                 </div>
-                                <!-- 會員資料 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">租借會員名稱：<span class="fw-bold">{{ item.Username
@@ -156,8 +152,6 @@
                                                 }}</span></p>
                                     </div>
                                 </div>
-
-                                <!-- 金額與時間 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">總金額：<span class="fw-bold">{{ item.totalPrice
@@ -172,8 +166,6 @@
                                                 item.returnTime }}</span></p>
                                     </div>
                                 </div>
-
-                                <!-- 付款狀態與訂單狀態 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">付款狀態：
@@ -222,13 +214,9 @@
             },
             created() {
                 const vm = this;
-                //確認uid01是否存在
                 if (vm.getCookie("Uid01")) {
-                    //將uid01傳遞至後端API執行驗證
-                    //input{"uid01":"1ssadwasdw"}
                     var JSONdata = {};
                     JSONdata["uid01"] = vm.getCookie("Uid01");
-                    console.log(JSON.stringify(JSONdata));
 
                     $.ajax({
                         type: "POST",
@@ -240,23 +228,15 @@
                             vm.userName = data.data.Username;
                             if (data.state) {
                                 if (data.data.Role === "管理員") {
-                                    console.log("歡迎管理員登入！");
                                     $("#drop").removeClass("d-none");
                                 }
-                                //顯示歡迎訊息
                                 $("#s02_username_showtext").removeClass("d-none");
                                 $("#orderlist_btn").removeClass("d-none");
                                 $("#s02_username_text").text(data.data.Username);
-
-                                //隱藏註冊與按鈕
                                 $("#s02_reg_btn").addClass("d-none");
                                 $("#s02_login_btn").addClass("d-none");
                                 $("#orderlist").removeClass("d-none");
-
-                                //登入後顯示登出按鈕
                                 $("#s02_logout_btn").removeClass("d-none");
-
-                                //顯示控制台按鈕
                                 $("#s02_control_panel_btn").removeClass("d-none");
                             }
                         },
@@ -282,13 +262,9 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
@@ -315,11 +291,8 @@
                 runcookie() {
                     const vm = this;
                     if (vm.getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = vm.getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -330,22 +303,14 @@
                                 console.log(data);
                                 if (data.state) {
                                     if (data.data.Role === "管理員") {
-                                        console.log("歡迎管理員登入！");
                                         $("#drop").removeClass("d-none");
                                     }
-                                    //顯示歡迎訊息
                                     $("#s02_username_showtext").removeClass("d-none");
                                     $("#orderlist_btn").removeClass("d-none");
                                     $("#s02_username_text").text(data.data.Username)
-
-                                    //隱藏註冊與按鈕
                                     $("#s02_reg_btn").addClass("d-none");
                                     $("#s02_login_btn").addClass("d-none");
-
-                                    //登入後顯示登出按鈕
                                     $("#s02_logout_btn").removeClass("d-none");
-
-                                    //顯示控制台按鈕
                                     $("#s02_control_panel_btn").removeClass("d-none");
                                 }
                             },
@@ -364,7 +329,6 @@
                     if (newValue) {
                         var JSONdata = {};
                         JSONdata["Username"] = newValue;
-                        console.log(JSON.stringify(JSONdata));
                         $.ajax({
                             type: "GET",
                             url: `orderlist_api.php?action=ownlist&Username=${newValue}`,
