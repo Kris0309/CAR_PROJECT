@@ -145,7 +145,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.state) {
-                        console.log(data);
                         $("#count_user").text(data.data.count_member);
                     }
                     else {
@@ -163,7 +162,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.state) {
-                        console.log(data);
                         $("#count_staitionName").text(data.data.count_staitionName);
                     }
                     else {
@@ -181,7 +179,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.state) {
-                        console.log(data);
                         $("#count_car").text(data.data.count_position);
                     }
                     else {
@@ -199,7 +196,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.state) {
-                        console.log(data);
                         $("#count_yet").text(data.data.count_yetlistState);
                     }
                     else {
@@ -311,8 +307,6 @@
                 });
             });
             $('#year').trigger('change');
-
-
         });
 
         const App = {
