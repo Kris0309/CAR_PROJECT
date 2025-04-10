@@ -69,7 +69,6 @@ function num_check()
         $p_number = trim($input["car_Number"]);
         if ($p_number) {
             $conn = create_connection();
-
             $stmt = $conn->prepare("SELECT car_Number FROM car WHERE car_Number = ?");
             $stmt->bind_param("s", $p_number);
             $stmt->execute();
@@ -95,7 +94,6 @@ function num_check()
 function list_car()
 {
     $conn = create_connection();
-
     $stmt = $conn->prepare("SELECT id, car_Price, carName, car_Number, count, position, energy, type, remark, Photo, on_state ,Create_at FROM car ORDER BY position ASC");
     $stmt->execute();
     $result = $stmt->get_result();
@@ -116,9 +114,9 @@ function list_car()
 function count_car()
 {
     $conn = create_connection();
-
     $sql = "SELECT count(*) as count_position FROM car";
     $result = $conn->query($sql);
+    
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         respond(true, "車輛數量統計成功", $row);
@@ -138,6 +136,7 @@ function update_car()
         $p_position  = $input["position"];
         $p_remark = $input["remark"];
         $p_state = $input["on_state"];
+        
         if ($p_id && $p_car_Price && $p_position && $p_state) {
             $conn = create_connection();
 
@@ -153,7 +152,6 @@ function update_car()
             } else {
                 respond(false, "車輛更新失敗");
             }
-
             $stmt->close();
             $conn->close();
         } else {
@@ -171,7 +169,6 @@ function delete_car()
         $p_id = trim($input["id"]);
         if ($p_id) {
             $conn = create_connection();
-
             $stmt = $conn->prepare("DELETE FROM car WHERE id = ?");
             $stmt->bind_param("i", $p_id); 
 
@@ -184,7 +181,6 @@ function delete_car()
             } else {
                 respond(false, "車輛刪除失敗");
             }
-
             $stmt->close();
             $conn->close();
         } else {
