@@ -23,7 +23,6 @@
         .banner {
             width: 100%;
             aspect-ratio: 16 / 9;
-            /* 設定16:9比例 */
             object-fit: cover;
         }
 
@@ -40,13 +39,11 @@
             width: 100%;
             z-index: 1000;
             background-color: rgba(203, 220, 235, 1);
-            /* 初始不透明 */
             transition: background-color 0.3s ease-in-out;
         }
 
         .navbar.scrolled {
             background-color: rgba(203, 220, 235, 0.5);
-            /* 滾動後變半透明 */
         }
 
         #map {
@@ -65,7 +62,6 @@
 
 <body>
     <div id="app" style="background-color: rgba(203, 220, 235, 0.5);">
-        <!-- section01導覽頁 -->
         <section>
             <nav class="navbar navbar-expand-lg fw-600">
                 <div class="container-fluid">
@@ -132,7 +128,7 @@
                 </div>
             </nav>
         </section>
-        <!-- registerModal -->
+        
         <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -327,7 +323,7 @@
                 </div>
             </div>
         </div>
-        <!-- loginModal -->
+
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -361,7 +357,6 @@
             </div>
         </div>
 
-        <!-- section02最新優惠 -->
         <section id="s02"
             class="hero vh-100 d-flex align-items-center justify-content-center text-center position-relative bg-cover"
             style="background-image: url(images/jake-blucker-tMzCrBkM99Y-unsplash.jpg);">
@@ -373,7 +368,6 @@
             </div>
         </section>
 
-        <!-- section03特色介紹 -->
         <section id="s3">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                 <div class="carousel-indicators">
@@ -427,7 +421,6 @@
             </div>
         </section>
 
-        <!-- section04主要在車輛介紹-->
         <section id="s4">
             <div class="container">
                 <div class="text-center display-2 fw-900"><span>---</span>推薦車輛<span>---</span></div>
@@ -505,7 +498,6 @@
             </div>
         </section>
 
-        <!-- section05 服務地區顯示  -->
         <section id="s5">
             <div class="container py-5">
                 <div class="display-3 text-center fw-bold mb-4">服務地點</div>
@@ -539,23 +531,19 @@
             </div>
         </section>
 
-        <!-- section06關於我們 -->
         <section id="s6" class="bg-203 py-5">
             <div class="container">
                 <div class="row">
-                    <!-- 以客為本，創造價值 -->
                     <div class="col-md-4 text-center my-3">
                         <i class="fa-regular fa-thumbs-up fa-5x text-white mb-3 d-none d-md-block"></i>
                         <div class="h2 text-white fw-bold">以客為本，創造價值</div>
                         <p class="text-white">我們致力於提供優質的租車服務，以滿足每位顧客的需求。透過貼心的服務與靈活的方案，讓每一段旅程都成為愉快的體驗，為顧客創造最大價值。</p>
                     </div>
-                    <!-- 安全第一，品質至上 -->
                     <div class="col-md-4 text-center my-3">
                         <i class="fa-solid fa-shield fa-5x text-white mb-3 d-none d-md-block"></i>
                         <div class="h2 text-white fw-bold">安全第一，品質至上</div>
                         <p class="text-white">我們以安全與品質為核心，為顧客提供可靠的車輛和專業的服務。無論旅程長短，我們都承諾以最高標準保障您的出行安全與舒適。</p>
                     </div>
-                    <!-- 環保創新，永續發展 -->
                     <div class="col-md-4 text-center my-3">
                         <i class="fa-solid fa-earth-americas fa-5x text-white mb-3 d-none d-md-block"></i>
                         <div class="h2 text-white fw-bold">環保創新，永續發展</div>
@@ -565,8 +553,6 @@
             </div>
         </section>
 
-
-        <!-- section07各區服務電話 -->
         <section id="s7" class="py-5" style="background-color: rgba(203, 220, 235, 0.5);">
             <div class="container">
                 <div class="row">
@@ -628,8 +614,6 @@
             </div>
         </section>
 
-
-
         <div class="footer text-center bg-04 py-2">
             <p class="mb-0 text-white fs-5">速馳租車 地址：台中市西屯區工業一路100號   電話：04-1234-4321     信箱：test122@test.com.tw</p>
         </div>
@@ -658,7 +642,6 @@
             }
         });
 
-
         const App = {
             data() {
                 return {
@@ -682,37 +665,30 @@
                     flag_userLogin: false,
                     passwordLogin: '',
                     flag_passwordLogin: false,
-                    cities: [], // 存放城市列表
+                    cities: [], 
                     selectedCity: "",
                     stationData: [],
                     filterstationData: [],
                     selectedStationId: null,
-                    map: null, // 地圖對象
-                    markers: null, // 標記圖層
+                    map: null,
+                    markers: null,
                 }
             },
             created() {
                 const vm = this;
                 axios.get('station_position.php?action=getalldata')
                     .then(function (response) {
-                        // handle success
-                        console.log(response.data);
                         vm.stationData = response.data.data;
                     })
                     .catch(function (error) {
-                        // handle error
                         console.log(error);
                     })
                     .finally(function () {
-                        // always executed
                     });
             },
             watch: {
                 username_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
-
-                    // 當使用者清空輸入框時，重置錯誤訊息
                     if (newValue.length < 3) {
                         vm.invalidMessage_username = "請依照規範輸入使用者名稱";
                         vm.flag_username_reg = false;
@@ -725,14 +701,12 @@
                     if (newValue.length > 2 && newValue.length < 10) {
                         var JSONdata = {};
                         JSONdata["Username"] = vm.username_reg;
-                        console.log(JSON.stringify(JSONdata));
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkuni",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 vm.flag_username_reg = data.state;
                                 vm.invalidMessage_username = data.message;
                             },
@@ -748,7 +722,6 @@
                 },
                 password_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     vm.flag_passwordRe_reg = false;
                     if (newValue.length > 2 && newValue.length < 10) {
                         vm.flag_password_reg = true;
@@ -759,17 +732,14 @@
                 },
                 passwordRe_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     if (newValue === vm.password_reg) {
                         vm.flag_passwordRe_reg = true;
                     } else {
                         vm.flag_passwordRe_reg = false;
                     }
-                    // vm.flag_passwordRe_reg = (newValue === vm.password_reg); 簡化
                 },
                 email_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     const rule = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
                     if (rule.test(newValue) && newValue.length <= 40) {
                         vm.flag_email_reg = true;
@@ -783,15 +753,12 @@
                     const rule = /^09\d{8}$/;
                     if (rule.test(newValue) && newValue.length === 10) {
                         var JSONdata = { Phone: newValue };
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkphone",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 vm.flag_phone_reg = data.state;
                                 vm.invalidMessage_phone = data.message;
                             },
@@ -805,7 +772,6 @@
                             }
                         });
                     } else {
-                        // **如果 newValue 不是 10 碼，清除狀態**
                         vm.flag_phone_reg = false;
                         vm.invalidMessage_phone = "格式錯誤或已被註冊過";
                     }
@@ -832,7 +798,6 @@
                 },
                 selectedCity(newValue) {
                     const vm = this;
-                    console.log(newValue);
                     vm.filterstationData = [];
                     vm.stationData.forEach((item) => {
                         if (item.cityName == vm.selectedCity) {
@@ -855,7 +820,6 @@
                             this.useruid = c.substring(name.length, c.length);
                         }
                     }
-                    console.log(typeof this.useruid, this.useruid === "");
                 },
                 submiRegion() {
                     const vm = this;
@@ -865,20 +829,17 @@
                         JSONdata["Password"] = vm.password_reg;
                         JSONdata["Email"] = vm.email_reg;
                         JSONdata["Phone"] = vm.phone_reg;
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=register",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 if (data.state) {
                                     Swal.fire({
                                         title: data.message,
                                         icon: "success"
-                                    }).then((result) => { //成功後跳轉原頁面
+                                    }).then((result) => {
                                         if (result.isConfirmed) {
                                             location.href = "index.html";
                                         }
@@ -917,8 +878,6 @@
                         var JSONdata = {};
                         JSONdata["Username"] = vm.userLogin;
                         JSONdata["Password"] = vm.passwordLogin;
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=login",
@@ -926,33 +885,21 @@
                             dataType: "json",
                             contentType: "application/json",
                             success: function (data) {
-                                console.log(data);
                                 if (data.state) {
-                                    console.log(data.data.Role);
                                     if (data.data.Role === "管理員") {
-                                        console.log("歡迎管理員登入！");
                                         $("#drop").removeClass("d-none");
                                         Swal.fire({
                                             title: data.message,
                                             icon: "success"
-                                        }).then((result) => { //成功後跳轉原頁面
+                                        }).then((result) => {
                                             if (result.isConfirmed) {
-                                                //loginModal消失
                                                 $("#loginModal").modal("hide");
-
-                                                //顯示歡迎訊息
                                                 $("#s02_username_showtext").removeClass("d-none");
                                                 $("#orderlist_btn").removeClass("d-none");
                                                 $("#s02_username_text").text(data.data.Username)
-
-                                                //隱藏註冊與按鈕
                                                 $("#s02_reg_btn").addClass("d-none");
                                                 $("#s02_login_btn").addClass("d-none");
-
-                                                //登入後顯示登出按鈕
                                                 $("#s02_logout_btn").removeClass("d-none");
-
-                                                //uid驗整碼寫入cookie
                                                 vm.setCookie("Uid01", data.data.Uid01, 7);
                                             }
                                         });
@@ -960,24 +907,15 @@
                                         Swal.fire({
                                             title: data.message,
                                             icon: "success"
-                                        }).then((result) => { //成功後跳轉原頁面
+                                        }).then((result) => {
                                             if (result.isConfirmed) {
-                                                //loginModal消失
                                                 $("#loginModal").modal("hide");
-
-                                                //顯示歡迎訊息
                                                 $("#s02_username_showtext").removeClass("d-none");
                                                 $("#orderlist_btn").removeClass("d-none");
                                                 $("#s02_username_text").text(data.data.Username)
-
-                                                //隱藏註冊與按鈕
                                                 $("#s02_reg_btn").addClass("d-none");
                                                 $("#s02_login_btn").addClass("d-none");
-
-                                                //登入後顯示登出按鈕
                                                 $("#s02_logout_btn").removeClass("d-none");
-
-                                                //uid驗整碼寫入cookie
                                                 vm.setCookie("Uid01", data.data.Uid01, 7);
                                             }
                                         });
@@ -991,7 +929,6 @@
                                 }
                             },
                             error: function (xhr, status, error) {
-                                console.log("AJAX Error:", xhr.responseText);
                                 Swal.fire({
                                     title: "API介接錯誤",
                                     text: "member_control_api_v1.php?action=login",
@@ -1019,59 +956,40 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
                         } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
                 runcookie() {
                     const vm = this;
                     if (vm.getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = vm.getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkuid",
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 if (data.state) {
                                     if (data.data.Role === "管理員") {
-                                        console.log("歡迎管理員登入！");
                                         $("#drop").removeClass("d-none");
                                         $("#orderlist_btn").addClass("d-none");
-                                        //顯示歡迎訊息
                                         $("#s02_username_showtext").removeClass("d-none");
                                         $("#s02_username_text").text(data.data.Username)
-
-                                        //隱藏註冊與按鈕
                                         $("#s02_reg_btn").addClass("d-none");
                                         $("#s02_login_btn").addClass("d-none");
-
-                                        //登入後顯示登出按鈕
                                         $("#s02_logout_btn").removeClass("d-none");
                                     }
                                     else {
-                                        //顯示歡迎訊息
                                         $("#s02_username_showtext").removeClass("d-none");
                                         $("#orderlist_btn").removeClass("d-none");
                                         $("#s02_username_text").text(data.data.Username)
-
-                                        //隱藏註冊與按鈕
                                         $("#s02_reg_btn").addClass("d-none");
                                         $("#s02_login_btn").addClass("d-none");
-
-                                        //登入後顯示登出按鈕
                                         $("#s02_logout_btn").removeClass("d-none");
                                     }
                                 }
@@ -1090,7 +1008,6 @@
                     const vm = this;
                     axios.get('station_position.php?action=getcity')
                         .then(response => {
-                            console.log("獲取的城市數據:", response.data);
                             vm.cities = response.data.data;
                         })
                         .catch(error => {
@@ -1120,38 +1037,25 @@
                 sendStationName(item) {
                     try {
                         const vm = this;
-                        console.log(item);
-
-                        // 檢查 item 是否有效
                         if (!item || !item.stationName || !item.latitude || !item.longitude) {
                             console.error("無效的 item 資料");
                             return;
                         }
 
-                        // 檢查 map 是否已初始化
                         if (!vm.map) {
                             console.error("map 未初始化");
                             return;
                         }
-
-                        console.log("選擇的站點:", item.stationName);
                         vm.selectedStation = item.stationName;
                         vm.selectedStationId = item.id;
-
-                        // 移動地圖視圖
-                        console.log("移動地圖到：", [item.latitude, item.longitude]);
                         vm.map.panTo([item.latitude, item.longitude]);
 
-                        // 檢查 markers 是否已初始化
                         if (!vm.markers) {
                             console.error("markers 未初始化");
                             return;
                         }
-
-                        // 清除地圖上現有的所有標記
                         vm.removeMarker();
 
-                        // 動態生成彈出窗口內容，顯示被點選的站點資料
                         const popupHTML = `
             <div style="width: 300px; padding: 15px;">
                 <div class="d-flex align-items-center mb-3">
@@ -1169,7 +1073,6 @@
             </div>
         `;
 
-                        // 創建標記並綁定彈出窗口
                         vm.markers.addLayer(L.marker([item.latitude, item.longitude]).bindPopup(popupHTML));
 
                     } catch (error) {
@@ -1187,27 +1090,20 @@
             },
             mounted() {
                 const vm = this;
-                vm.getUid01(); // 頁面載入時自動讀取資料
+                vm.getUid01();
                 window.addEventListener("userLoggedIn", vm.getUid01);
                 vm.runcookie();
                 vm.fetchCities();
-
-                // 初始化地圖並將其存儲在 Vue 實例中
                 vm.map = L.map('map').setView([25.05002508812975, 121.51701888568617], 13);
 
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(vm.map);
 
-                // 初始化 markers 並將其存儲在 Vue 實例中
                 vm.markers = new L.markerClusterGroup().addTo(vm.map);
-
-                console.log(vm.map); // 檢查 map 是否已初始化
-
             },
             beforeUnmount() {
                 const vm = this;
-                // 確保組件卸載時清除事件監聽
                 window.removeEventListener("userLoggedIn", vm.getUid01);
             },
         }
