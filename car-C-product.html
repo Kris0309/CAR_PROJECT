@@ -171,12 +171,6 @@
                     $("#s02_username_showtext").removeClass("d-none");
                     $("#s02_username_text").text(data.data.Username);
                     $("#s02_logout_btn").removeClass("d-none");
-                    $("#mydata #update_btn").click(function () {
-                        u_id = $(this).data("id");
-                        $("#updateModal_username").val($(this).data("username"));
-                        $("#updateModal_email").val($(this).data("email"));
-
-                    });
                 } else {
                     Swal.fire({
                         title: "權限不足",
