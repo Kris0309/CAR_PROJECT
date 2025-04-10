@@ -83,7 +83,6 @@
                                                 item.station }}</span></p>
                                     </div>
                                 </div>
-                                <!-- 會員資料 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">租借會員名稱：<span class="fw-bold">{{ item.Username
@@ -98,8 +97,6 @@
                                                 }}</span></p>
                                     </div>
                                 </div>
-
-                                <!-- 金額與時間 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">總金額：<span class="fw-bold">{{ item.totalPrice
@@ -114,8 +111,6 @@
                                                 item.returnTime }}</span></p>
                                     </div>
                                 </div>
-
-                                <!-- 付款狀態與訂單狀態 -->
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="h6 text-secondary">付款狀態：
@@ -134,8 +129,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-                                <!-- 操作按鈕 -->
                                 <div class="mt-3 d-flex justify-content-center">
                                     <button class="fw-bold btn btn-outline-success btn-sm align-items-center me-1"
                                         @click="toggleStatus_updatePayment(item.id)">
@@ -169,8 +162,8 @@
         const App = {
             data() {
                 return {
-                    orderlist: [], // 存放從 API 取得的資料
-                    searchItem: "", // 綁定搜尋輸入
+                    orderlist: [],
+                    searchItem: "",
                 };
             },
             created() {
@@ -179,13 +172,9 @@
             methods: {
                 checkUid01() {
                     const vm = this;
-                    //確認uid01是否存在
                     if (vm.getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = vm.getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -193,38 +182,19 @@
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data);
                                 if (data.state) {
-                                    console.log(data.data.Role)
                                     if (data.data.Role === "管理員") {
-                                        console.log("歡迎管理員登入！");
                                         $("#card").removeClass("d-none");
-                                        //顯示歡迎訊息
                                         $("#s02_username_showtext").removeClass("d-none");
                                         $("#s02_username_text").text(data.data.Username);
-
-                                        //顯示登出按鈕
                                         $("#s02_logout_btn").removeClass("d-none");
-
-                                        // 按鈕監聽update_btn
-                                        $("#mydata #update_btn").click(function () {
-                                            console.log($(this).data("id"));
-                                            console.log($(this).data("username"));
-                                            console.log($(this).data("email"));
-
-                                            //將資料同步至modal
-                                            u_id = $(this).data("id");
-                                            $("#updateModal_username").val($(this).data("username"));
-                                            $("#updateModal_email").val($(this).data("email"));
-
-                                        });
                                     } else {
                                         Swal.fire({
                                             title: "權限不足",
                                             icon: "warning",
                                             text: "此帳號無管理員權限",
                                         }).then(() => {
-                                            location.href = "index.html"; // 跳回首頁
+                                            location.href = "index.html";
                                         });
                                     }
 
@@ -237,7 +207,6 @@
                                         denyButtonText: `Don't save`,
                                         allowOutsideClick: false
                                     }).then((result) => {
-                                        /* Read more about isConfirmed, isDenied below */
                                         if (result.isConfirmed) {
                                             location.href = "index.html";
                                         }
@@ -296,13 +265,9 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
@@ -313,11 +278,8 @@
                             url: "orderlist_api.php?action=getdata",
                             dataType: "json",
                         });
-
-                        console.log(response);
-
                         if (response && response.data) {
-                            this.orderlist = response.data; // 更新 Vue 的 data
+                            this.orderlist = response.data;
                         } else {
                             throw new Error("API 回傳資料格式錯誤");
                         }
@@ -331,7 +293,7 @@
                 },
                 deleteOrder(orderId) {
                     const vm = this;
-                    const order = vm.search.find(item => item.id === orderId); // 根據傳遞的 ID 查找訂單
+                    const order = vm.search.find(item => item.id === orderId);
                     if (order && order.id) {
                         Swal.fire({
                             title: "確認刪除?",
@@ -345,8 +307,7 @@
                             confirmButtonText: "確認"
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                var JSONdata = { "id": order.id }; // 這裡是將 id 傳遞給後端
-                                console.log(JSON.stringify(JSONdata));
+                                var JSONdata = { "id": order.id };
 
                                 $.ajax({
                                     type: "DELETE",
@@ -354,14 +315,13 @@
                                     data: JSON.stringify(JSONdata),
                                     dataType: "json",
                                     success: function (data) {
-                                        console.log(data);
                                         if (data.state) {
                                             Swal.fire({
                                                 title: "刪除成功",
                                                 icon: "success"
                                             }).then(() => {
                                                 // 成功後更新頁面
-                                                vm.search = vm.search.filter(item => item.id !== orderId); // 移除刪除的訂單
+                                                vm.search = vm.search.filter(item => item.id !== orderId);
                                                 location.href = 'orderlist_panel.html';
                                             });
                                         } else {
@@ -399,10 +359,8 @@
                     if (order) {
                         var JSONdata = {
                             "id": order.id,
-                            "payment_status": order.payment_status // 只更新付款狀態
+                            "payment_status": order.payment_status
                         };
-
-                        console.log("更新付款狀態:", JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -436,18 +394,14 @@
                         });
                     }
                 },
-                // 更新訂單狀態
                 updateOrderState(orderId) {
                     const vm = this;
                     const order = vm.search.find(item => item.id === orderId);
                     if (order) {
                         const JSONdata = {
                             "id": order.id,
-                            "listState": order.listState // 更新訂單的狀態
+                            "listState": order.listState
                         };
-
-                        console.log("更新訂單狀態:", JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "orderlist_api.php?action=editorderstate",
@@ -484,10 +438,7 @@
                     const vm = this;
                     const order = vm.search.find(item => item.id === orderId);
                     if (order) {
-                        // 切換狀態
                         order.listState = order.listState === '未完成' ? '已完成' : '未完成';
-
-                        // 更新狀態至伺服器
                         vm.updateOrderState(order.id);
                     }
                 },
@@ -495,10 +446,7 @@
                     const vm = this;
                     const order = vm.search.find(item => item.id === orderId);
                     if (order) {
-                        // 切換狀態
                         order.payment_status = order.payment_status === '未付款' ? '已付款' : '未付款';
-
-                        // 更新狀態至伺服器
                         vm.updatePayment(order.id);
                     }
                 },
@@ -506,8 +454,8 @@
             },
             computed: {
                 search() {
-                    if (!this.orderlist || this.orderlist.length === 0) return []; // 避免錯誤
-                    if (!this.searchItem) return this.orderlist; // 若沒有輸入關鍵字，回傳完整清單
+                    if (!this.orderlist || this.orderlist.length === 0) return [];
+                    if (!this.searchItem) return this.orderlist;
 
                     return this.orderlist.filter(order =>
                         (order.Username && order.Username.toLowerCase().includes(this.searchItem.toLowerCase())) ||
