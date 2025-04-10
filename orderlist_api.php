@@ -1,8 +1,8 @@
 <?php
-const DB_SERVER   = "192.168.2.3";
-const DB_USERNAME = "stone_test";
-const DB_PASSWORD = "Pks2pZD9LQCYLpCI75k5fw";
-const DB_NAME     = "stone_test";
+const DB_SERVER   = "";
+const DB_USERNAME = "";
+const DB_PASSWORD = "";
+const DB_NAME     = "";
 
 header('Content-Type:application/json');
 
@@ -41,6 +41,7 @@ function create_order()
         $p_borrowTime = $input["borrowTime"];
         $p_returnTime = $input["returnTime"];
         $p_payment_method = $input["payment_method"];
+        
         if ($p_order_number && $p_username && $p_phone && $p_carName && $p_carNumber && $p_totalPrice && $p_station && $p_borrowTime && $p_returnTime && $p_payment_method) {
             $conn = create_connection();
             $stmt2 = $conn->prepare("UPDATE car SET on_state = '借出' WHERE car_Number = ?");
@@ -89,9 +90,7 @@ function get_alldata()
 function count_yetlist()
 {
     $conn = create_connection();
-
     $sql = "SELECT COUNT(*) AS count_yetlistState FROM orderlist WHERE listState = '未完成'";
-
     $result = $conn->query($sql);
 
     if ($result) {
@@ -107,9 +106,7 @@ function count_yetlist()
 function count_donelist()
 {
     $conn = create_connection();
-
     $sql = "SELECT COUNT(*) AS count_donelistState FROM orderlist WHERE listState = '已完成'";
-
     $result = $conn->query($sql);
 
     if ($result) {
@@ -126,7 +123,6 @@ function user_order_check()
 {
     $username = $_GET["Username"];
     $conn = create_connection();
-
     $sql = "SELECT COUNT(*) AS order_count FROM orderlist WHERE Username = ? AND listState = '未完成'";
     $stmt = $conn->prepare($sql);
 
@@ -158,7 +154,6 @@ function user_own_order()
 {
     $username = $_GET["Username"];
     $conn = create_connection();
-
     $sql = "SELECT * FROM orderlist WHERE Username = ?";
     $stmt = $conn->prepare($sql);
 
@@ -256,7 +251,6 @@ function delete_order()
         $p_id = trim($input["id"]);
         if ($p_id) {
             $conn = create_connection();
-
             $stmt = $conn->prepare("DELETE FROM orderlist WHERE ID = ?");
             $stmt->bind_param("i", $p_id);
 
@@ -305,12 +299,10 @@ function count_doneOrder_month()
                 'total_revenue' => $row['total_revenue'] ?? 0
             ];
         }
-
         respond(true, "每月報表生成成功", $monthlyReport);
     } else {
         respond(false, "每月報表生成失敗: " . $conn->error);
     }
-
     $conn->close();
 }
 
