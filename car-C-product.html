@@ -158,36 +158,20 @@
         </div>
     </div>
 
-
-
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <script>
-
         function showdata_checkuid(data) {
-            console.log(data);
             if (data.state) {
-                console.log(data.data.Role)
                 if (data.data.Role === "管理員") {
-                    console.log("歡迎管理員登入！");
                     $("#card").removeClass("d-none");
-                    //顯示歡迎訊息
                     $("#s02_username_showtext").removeClass("d-none");
                     $("#s02_username_text").text(data.data.Username);
-
-                    //顯示登出按鈕
                     $("#s02_logout_btn").removeClass("d-none");
-
-                    // 按鈕監聽update_btn
                     $("#mydata #update_btn").click(function () {
-                        console.log($(this).data("id"));
-                        console.log($(this).data("username"));
-                        console.log($(this).data("email"));
-
-                        //將資料同步至modal
                         u_id = $(this).data("id");
                         $("#updateModal_username").val($(this).data("username"));
                         $("#updateModal_email").val($(this).data("email"));
@@ -199,7 +183,7 @@
                         icon: "warning",
                         text: "此帳號無管理員權限",
                     }).then(() => {
-                        location.href = "index.html"; // 跳回首頁
+                        location.href = "index.html";
                     });
                 }
 
@@ -212,7 +196,6 @@
                     denyButtonText: `Don't save`,
                     allowOutsideClick: false
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         location.href = "index.html";
                     }
@@ -220,7 +203,6 @@
             }
         }
 
-        //from w3school
         function setCookie(cname, cvalue, exdays) {
             const d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -332,8 +314,6 @@
                     if (newValue.length > 1 && newValue.length < 9) {
                         var JSONdata = {};
                         JSONdata["car_Number"] = vm.carNumber;
-                        console.log(JSON.stringify(JSONdata));
-                        //傳遞至後端確認車牌是否可以使用
                         $.ajax({
                             type: "POST",
                             url: "car_control_api.php?action=numcheck",
@@ -341,7 +321,6 @@
                             dataType: "json",
                             contentType: "application/json",
                             success: function (data) {
-                                console.log(data);
                                 vm.flag_carNumber = data.state;
                                 vm.invalidcarNumberMessage = data.message;
 
@@ -368,14 +347,9 @@
             },
             methods: {
                 checkUid01() {
-                    //確認uid01是否存在
                     if (getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkuid",
@@ -413,13 +387,9 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
@@ -458,10 +428,8 @@
                             const id = await vm.sendData(carData);
                             if (id) {
                                 if (vm.flag_upload) {
-                                    // 如果有上傳圖片，則執行上傳
                                     await vm.uploadFile(id);
                                 }
-                                // 成功提交，顯示 SweetAlert 提示
                                 Swal.fire({
                                     title: '提交成功！',
                                     text: '您的資料已經成功提交。',
@@ -471,7 +439,6 @@
                                     location.href = "car-C-product.html";
                                 });
                             } else {
-                                // 如果提交資料失敗
                                 Swal.fire({
                                     title: '提交失敗',
                                     text: '資料提交過程中出現問題，請稍後再試。',
@@ -480,7 +447,6 @@
                                 });
                             }
                         } catch (error) {
-                            // 如果有錯誤
                             console.error('提交失敗', error);
                             Swal.fire({
                                 title: '提交失敗',
@@ -490,7 +456,6 @@
                             });
                         }
                     } else {
-                        // 欄位未填寫正確
                         Swal.fire({
                             title: '資料錯誤',
                             text: '請確認所有欄位均已填寫正確。',
