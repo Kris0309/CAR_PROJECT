@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Sans+JP&family=Noto+Sans+TC:wght@100..900&family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
-
-
 :root {
     --color01: #91D4C2;
     --color02: #45bb89;
@@ -25,7 +23,6 @@
     --color304: #d2ab17;
 }
 
-/*背景顏色*/
 .bg-01 {
     background-color: #91D4C2;
 }
@@ -99,8 +96,6 @@
     background-size: cover;
 }
 
-/* 按鈕 */
-
 .btn-gold {
     --bs-btn-color: #fff;
     --bs-btn-bg: #fcd54a;
@@ -169,7 +164,6 @@
     --bs-gradient: none;
 }
 
-/*文字粗體*/
 .fw-100 {
     font-weight: 100;
 }
@@ -206,10 +200,6 @@
     font-weight: 900;
 }
 
-
-
-
-/*外層：box_in 內層：roller*/
 .box_in {
     position: relative;
     overflow: hidden;
@@ -217,7 +207,6 @@
 
 .box_in .roller {
     position: absolute;
-    /* background-color: rgba(0, 0, 0, 0.3); */
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
     width: 100%;
     height: 100%;
@@ -240,7 +229,6 @@
 
 .box_inb .rollerb {
     position: absolute;
-    /* background-color: rgba(0, 0, 0, 0.3); */
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
     width: 100%;
     height: 100%;
@@ -263,7 +251,6 @@
 
 .box_inl .rollerl {
     position: absolute;
-    /* background-color: rgba(0, 0, 0, 0.3); */
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(86, 165, 255, 0.3));
     width: 100%;
     height: 100%;
@@ -279,7 +266,6 @@
     transition: left 1s;
 }
 
-/* 選單 */
 .banner nav {
     height: 90px;
     text-align: center;
@@ -325,15 +311,7 @@
     }
 }
 
-/* 1. table .table-rwd 
-   2. <td data-th="xx">
-   3. <span class="table-col"></span>*/
-
 @media screen and (max-width:768px) {
-    /* body{
-        background-color: var(--color01); 
-        background-image: linear-gradient(90deg, rgba(223, 176, 176, 0.1), rgba(45, 134, 218, 0.8));
-    } */
 
     .table-rwd thead {
         display: none;
@@ -352,7 +330,6 @@
 
     */ .table-rwd tbody tr td::before {
         content: attr(data-th)" ： ";
-        /*data-XX偽文字(畫面被拉小後會出現)*/
         color: var(--color04);
         font-size: 20px;
         font-weight: 900;
@@ -371,44 +348,27 @@
 
 }
 
-/* 文字底線 */
-/* 設定 <a> 樣式 */
 a.line {
     position: relative;
-    /* 設定相對定位，以便讓 ::after 參考這個元素 */
     text-decoration: none;
-    /* 移除預設的底線，改用 ::after 來製作動畫 */
 }
 
-/* 使用 ::after 來創造底線動畫 */
 a.line::after {
     content: "";
-    /* 必須有 content，否則 ::after 不會出現在畫面上 */
     position: absolute;
-    /* 設定絕對定位，相對於 a.line 這個元素 */
     left: 0;
-    /* 從左邊開始 */
     bottom: -2px;
-    /* 距離文字 2px，使其位於文字下方 */
     width: 0;
-    /* 初始時底線寬度為 0，讓它隱藏 */
     height: 2px;
-    /* 設定底線的厚度 */
     background-color: currentColor;
-    /* 使用 a 元素的文字顏色作為底線顏色 */
     transition: width 0.3s ease-in-out;
-    /* 設定寬度的變化動畫，使底線從無到有逐漸展開 */
 }
 
-/* 滑鼠懸停 (hover) 或點擊 (active) 時，讓底線展開 */
 a.line:hover::after,
 a.line:active::after {
     width: 100%;
-    /* 讓底線從 0 擴展到 100%（整個文字底部） */
 }
 
-
-/* RWD文字 */
 .sec-text {
     z-index: 10;
     background-color: rgba(0, 0, 0, 0.2);
