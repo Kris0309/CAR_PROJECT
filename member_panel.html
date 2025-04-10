@@ -87,7 +87,6 @@
         </div>
     </div>
 
-    <!-- updateModal -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -133,14 +132,10 @@
         var u_id;
 
         $(function () {
-            //確認uid是否合法
             if (getCookie("Uid01")) {
-                //將uid01傳遞至後端API執行驗證
-                //input {"uid01" : "c5e6c37a"}
                 var JSONdata = {};
                 JSONdata["uid01"] = getCookie("Uid01");
-                console.log(JSON.stringify(JSONdata));
-
+                
                 $.ajax({
                     type: "POST",
                     url: "member_control_api_v1.php?action=checkuid",
@@ -164,7 +159,6 @@
                     denyButtonText: `Don't save`,
                     allowOutsideClick: false
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         location.href = "index.html";
                     }
@@ -173,11 +167,8 @@
         });
 
         function showdata_checkuid(data) {
-            console.log(data);
             if (data.state) {
-
                 if (data.data.Role === "管理員") {
-                    console.log("歡迎管理員登入！");
                     $("#table").removeClass("d-none");
                 } else {
                     Swal.fire({
@@ -185,17 +176,12 @@
                         icon: "warning",
                         text: "此帳號無管理員權限",
                     }).then(() => {
-                        location.href = "index.html"; // 跳回首頁
+                        location.href = "index.html";
                     });
                 }
-                //顯示歡迎訊息
                 $("#s02_username_showtext").removeClass("d-none");
                 $("#s02_username_text").text(data.data.Username);
-
-                //顯示登出按鈕
                 $("#s02_logout_btn").removeClass("d-none");
-
-                //渲染table資料
                 $.ajax({
                     type: "GET",
                     url: "member_control_api_v1.php?action=getalldata",
@@ -211,7 +197,6 @@
                     }
                 });
 
-                //即時監聽Modalemail
                 $("#updateModal_email").bind("input propertychange", function () {
                     if ($(this).val().length > 2 && $(this).val().length < 30) {
                         $(this).removeClass("is-invalid");
@@ -225,22 +210,16 @@
                     }
                 });
 
-                //即時監聽Modalphone
                 $("#updateModal_phone").bind("input propertychange", function () {
                     let value = $(this).val();
-                    // 移除非數字與 "-" 的字元
                     value = value.replace(/[^0-9-]/g, "");
-                    // 限制長度最多 12 個字符
                     if (value.length > 12) {
                         value = value.substring(0, 12);
                     }
-
-                    $(this).val(value); // 更新輸入框內容
-                    // 驗證是否符合規則 (只包含數字和 "-"，且長度不超過 12)
+                    $(this).val(value);
                     if (/^[\d-]+$/.test(value) && (value.length >= 10 && value.length <= 12)) {
                         var JSONdata = {};
                         JSONdata["Phone"] = $("#updateModal_phone").val();
-                        console.log(JSON.stringify(JSONdata));
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkphone",
@@ -262,14 +241,7 @@
                     }
                 });
 
-                // 按鈕監聽update_btn
                 $("#mydata #update_btn").click(function () {
-                    console.log($(this).data("id"));
-                    console.log($(this).data("username"));
-                    console.log($(this).data("email"));
-                    console.log($(this).data("phone"));
-
-                    //將資料同步至modal
                     u_id = $(this).data("id");
                     $("#updateModal_username").val($(this).data("username"));
                     $("#updateModal_email").val($(this).data("email"));
@@ -277,16 +249,12 @@
 
                 });
 
-                //按鈕監聽 updateModal_update_btn
                 $("#updateModal_update_btn").click(function () {
                     if (flag_updateModal_email) {
-                        console.log($("#updateModal_email").val());
-                        //傳遞至後端API 執行更新
                         var JSONdata = {};
                         JSONdata["id"] = u_id;
                         JSONdata["Email"] = $("#updateModal_email").val();
                         JSONdata["Phone"] = $("#updateModal_phone").val();
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -312,7 +280,6 @@
                     }
                 });
 
-                // 按鈕監聽delete_btn
                 $("#mydata #delete_btn").click(function () {
                     Swal.fire({
                         title: "確認要刪除使用者嗎?",
@@ -322,13 +289,9 @@
                         denyButtonText: `取消`,
                         allowOutsideClick: false
                     }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
                         if (result.isConfirmed) {
-                            console.log($(this).data("id"));
                             var JSONdata = {};
                             JSONdata["id"] = $(this).data("id");
-                            console.log(JSON.stringify(JSONdata));
-
                             $.ajax({
                                 type: "DELETE",
                                 url: "member_control_api_v1.php?action=delete",
@@ -347,7 +310,6 @@
                     });
                 });
 
-                // 監聽登出按鈕
                 $("#s02_logout_btn").click(function () {
                     Swal.fire({
                         title: "確定要登出嗎?",
@@ -358,12 +320,8 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             setCookie("Uid01", "", 7);
                             location.href = "index.html";
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 });
@@ -377,7 +335,6 @@
                     denyButtonText: `Don't save`,
                     allowOutsideClick: false
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         location.href = "index.html";
                     }
@@ -386,7 +343,6 @@
         }
 
         function showdata_checkphone(data) {
-            console.log(data);
             if (data.state) {
                 $("#updateModal_phone").removeClass("is-invalid");
                 $("#updateModal_phone").addClass("is-valid");
@@ -402,7 +358,6 @@
         }
 
         function showdata_getalldata(data) {
-            console.log(data);
             $("#mydata").empty();
             data.data.forEach(function (item) {
                 var strHTML = `<tr>
@@ -423,7 +378,6 @@
         }
 
         function show_update(data) {
-            console.log(data);
             if (data.state) {
                 Swal.fire({
                     title: data.message,
@@ -434,7 +388,6 @@
                     icon: "success",
                     allowOutsideClick: false
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         location.href = "member_panel.html";
                     }
@@ -450,7 +403,6 @@
         }
 
         function show_delete(data) {
-            console.log(data);
             if (data.state) {
                 Swal.fire({
                     title: data.message,
@@ -461,7 +413,6 @@
                     icon: "success",
                     allowOutsideClick: false
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         location.href = "member_panel.html";
                     }
@@ -476,7 +427,6 @@
             }
         }
 
-        //from w3s
         function setCookie(cname, cvalue, exdays) {
             const d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
