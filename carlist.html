@@ -30,20 +30,17 @@
             width: 100%;
             z-index: 1000;
             background-color: rgba(203, 220, 235, 1);
-            /* 初始不透明 */
             transition: background-color 0.3s ease-in-out;
         }
 
         .navbar.scrolled {
             background-color: rgba(203, 220, 235, 0.5);
-            /* 滾動後變半透明 */
         }
     </style>
 </head>
 
 <body class="bg-104">
     <div id="app">
-        <!-- section01導覽頁 -->
         <section>
             <nav class="navbar navbar-expand-lg fw-600">
                 <div class="container-fluid">
@@ -112,7 +109,7 @@
                 </div>
             </nav>
         </section>
-        <!-- registerModal -->
+
         <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -307,7 +304,7 @@
                 </div>
             </div>
         </div>
-        <!-- loginModal -->
+
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -369,7 +366,6 @@
                     </div>
                 </div>
 
-                <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -530,17 +526,17 @@
                     selectedCar: null,
                     startDate: '',
                     endDate: '',
-                    cacheItem: [],  // 存放後端資料
-                    searchItem: '', // 綁定搜尋欄
+                    cacheItem: [],
+                    searchItem: '',
                     carData: [],
                     orderName: '',
                     orderPhone: '',
                     paymentCheck: '現金',
-                    cities: [], // 存放城市列表
+                    cities: [],
                     selectedCity: "",
                     stationData: [],
                     filterstationData: [],
-                    selectedStationId: null, // 記錄選中的站點 ID
+                    selectedStationId: null,
                     searchItem: '',
                     orderDays: 1,
                     orderPrice: 1000,
@@ -550,29 +546,21 @@
                 const vm = this;
                 axios.get('car_control_api.php?action=carlist')
                     .then(function (response) {
-                        // handle success
-                        console.log(response.data);
                         vm.carData = response.data.data;
                     })
                     .catch(function (error) {
-                        // handle error
                         console.log(error);
                     })
                     .finally(function () {
-                        // always executed
                     });
                 axios.get('station_position.php?action=getalldata')
                     .then(function (response) {
-                        // handle success
-                        console.log(response.data);
                         vm.stationData = response.data.data;
                     })
                     .catch(function (error) {
-                        // handle error
                         console.log(error);
                     })
                     .finally(function () {
-                        // always executed
                     });
             },
             watch: {
@@ -580,9 +568,6 @@
                 endDate: "updateOrderDays",
                 username_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
-
-                    // 當使用者清空輸入框時，重置錯誤訊息
                     if (newValue.length < 3) {
                         vm.invalidMessage_username = "請依照規範輸入使用者名稱";
                         vm.flag_username_reg = false;
@@ -595,7 +580,6 @@
                     if (newValue.length > 2 && newValue.length < 10) {
                         var JSONdata = {};
                         JSONdata["Username"] = vm.username_reg;
-                        console.log(JSON.stringify(JSONdata));
                         $.ajax({
                             type: "POST",
                             url: "member_control_api_v1.php?action=checkuni",
@@ -618,7 +602,6 @@
                 },
                 password_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     vm.flag_passwordRe_reg = false;
                     if (newValue.length > 2 && newValue.length < 10) {
                         vm.flag_password_reg = true;
@@ -629,17 +612,14 @@
                 },
                 passwordRe_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     if (newValue === vm.password_reg) {
                         vm.flag_passwordRe_reg = true;
                     } else {
                         vm.flag_passwordRe_reg = false;
                     }
-                    // vm.flag_passwordRe_reg = (newValue === vm.password_reg); 簡化
                 },
                 email_reg: function (newValue) {
                     const vm = this;
-                    console.log(newValue);
                     const rule = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
                     if (rule.test(newValue) && newValue.length <= 40) {
                         vm.flag_email_reg = true;
@@ -653,7 +633,6 @@
                     const rule = /^09\d{8}$/;
                     if (rule.test(newValue) && newValue.length === 10) {
                         var JSONdata = { Phone: newValue };
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -675,7 +654,6 @@
                             }
                         });
                     } else {
-                        // **如果 newValue 不是 10 碼，清除狀態**
                         vm.flag_phone_reg = false;
                         vm.invalidMessage_phone = "格式錯誤或已被註冊過";
                     }
@@ -702,7 +680,6 @@
                 },
                 selectedCity(newValue) {
                     const vm = this;
-                    console.log(newValue);
                     vm.filterstationData = [];
                     vm.stationData.forEach((item) => {
                         if (item.cityName == vm.selectedCity) {
@@ -713,16 +690,16 @@
             },
             computed: {
                 searchcar() {
-                    return this.cacheItem // 從 `cacheItem` 中過濾出符合條件的車輛
-                        .filter(car => car.on_state === "上架") // 篩選出狀態為 "上架" 的車輛
-                        .filter(car => { // 對每輛車進行以下篩選
-                            const searchTerm = this.searchItem.toLowerCase(); // 取得搜尋關鍵字並轉為小寫，方便與車輛資訊進行比對
+                    return this.cacheItem
+                        .filter(car => car.on_state === "上架")
+                        .filter(car => {
+                            const searchTerm = this.searchItem.toLowerCase();
                             return (
-                                !this.searchItem || // 如果沒有輸入搜尋關鍵字，則不進行篩選，直接返回所有車輛
-                                car.carName.toLowerCase().includes(searchTerm) || // 如果有搜尋關鍵字，檢查車名是否包含搜尋關鍵字
-                                car.position.toLowerCase().includes(searchTerm) || // 檢查車輛所在區域是否包含搜尋關鍵字
-                                car.count.toString().includes(searchTerm) || // 檢查乘載人數（轉為字串後）是否包含搜尋關鍵字
-                                car.energy.toLowerCase().includes(searchTerm) ||  // 檢查使用能源是否包含搜尋關鍵字
+                                !this.searchItem ||
+                                car.carName.toLowerCase().includes(searchTerm) ||
+                                car.position.toLowerCase().includes(searchTerm) ||
+                                car.count.toString().includes(searchTerm) ||
+                                car.energy.toLowerCase().includes(searchTerm) ||
                                 car.type.toLowerCase().includes(searchTerm)
                             );
                         });
@@ -732,7 +709,6 @@
                     return vm.startDate && vm.endDate && vm.startDate >= vm.endDate;
                 },
                 serch() {
-                    //處理搜尋功能
                     if (vm.searchItem) {
                         filterdata = filterdata.filter(item => item.title.toLowerCase().includes(vm.searchItem.toLowerCase()));
                     }
@@ -740,12 +716,12 @@
                 orderDays() {
                     const vm = this;
                     if (!vm.startDate || !vm.endDate) {
-                        return 1; // 預設最少 1 天
+                        return 1;
                     }
                     const startDate = new Date(vm.startDate);
                     const endDate = new Date(vm.endDate);
                     const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-                    return days > 0 ? days : 1; // 確保最少為 1 天
+                    return days > 0 ? days : 1;
                 },
 
             },
@@ -754,7 +730,6 @@
                     try {
                         const response = await axios.get('car_control_api.php?action=carlist');
 
-                        // 確保 API 回傳的 data 屬性是陣列
                         if (response.data && Array.isArray(response.data.data)) {
                             this.cacheItem = response.data.data;
                         } else {
@@ -788,7 +763,6 @@
                         JSONdata["Password"] = vm.password_reg;
                         JSONdata["Email"] = vm.email_reg;
                         JSONdata["Phone"] = vm.phone_reg;
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -801,7 +775,7 @@
                                     Swal.fire({
                                         title: data.message,
                                         icon: "success"
-                                    }).then((result) => { //成功後跳轉原頁面
+                                    }).then((result) => {
                                         if (result.isConfirmed) {
                                             location.href = "carlist.html";
                                         }
@@ -860,24 +834,14 @@
                                         title: data.message,
                                         icon: "success"
                                     }).then((result) => {
-                                        // location.href = "carlist.html";
                                         if (result.isConfirmed) {
-                                            //loginModal消失
                                             $("#loginModal").modal("hide");
-
-                                            //顯示歡迎訊息
                                             $("#s02_username_showtext").removeClass("d-none");
                                             $("#orderlist_btn").removeClass("d-none");
                                             $("#s02_username_text").text(data.data.Username)
-
-                                            //隱藏註冊與按鈕
                                             $("#s02_reg_btn").addClass("d-none");
                                             $("#s02_login_btn").addClass("d-none");
-
-                                            //登入後顯示登出按鈕
                                             $("#s02_logout_btn").removeClass("d-none");
-
-                                            //uid驗整碼寫入cookie
                                             vm.setCookie("Uid01", data.data.Uid01, 7);
                                         }
                                     });
@@ -918,24 +882,17 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
                 runcookie() {
                     const vm = this;
                     if (vm.getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = vm.getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
@@ -943,36 +900,24 @@
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
-                                console.log(data.data.Username);
                                 vm.orderName = data.data.Username;
                                 vm.orderPhone = data.data.Phone;
                                 if (data.state) {
                                     if (data.data.Role === "管理員") {
-                                        console.log("歡迎管理員登入！");
                                         $("#drop").removeClass("d-none");
                                         $("#orderlist_btn").addClass("d-none");
-                                        //顯示歡迎訊息
                                         $("#s02_username_showtext").removeClass("d-none");
                                         $("#s02_username_text").text(data.data.Username)
-
-                                        //隱藏註冊與按鈕
                                         $("#s02_reg_btn").addClass("d-none");
                                         $("#s02_login_btn").addClass("d-none");
-
-                                        //登入後顯示登出按鈕
                                         $("#s02_logout_btn").removeClass("d-none");
                                     }
                                     else {
-                                        //顯示歡迎訊息
                                         $("#s02_username_showtext").removeClass("d-none");
                                         $("#orderlist_btn").removeClass("d-none");
                                         $("#s02_username_text").text(data.data.Username)
-
-                                        //隱藏註冊與按鈕
                                         $("#s02_reg_btn").addClass("d-none");
                                         $("#s02_login_btn").addClass("d-none");
-
-                                        //登入後顯示登出按鈕
                                         $("#s02_logout_btn").removeClass("d-none");
                                     }
                                 }
@@ -992,7 +937,6 @@
                     vm.selectedCar = car;
                 },
                 filterCarsByRegion(region) {
-                    // 根據區域過濾車輛
                     return this.searchcar.filter(car => car.position === region);
                 },
                 submiOrder() {
@@ -1000,38 +944,33 @@
                     const minTimeTwoDaysLater = moment().add(2, 'days').startOf('day');
                     const formatted = minTimeTwoDaysLater.format('YYYY-MM-DDTHH:mm');
 
-                    // 檢查日期錯誤
                     if (vm.dateError) {
                         alert('結束日期須晚於開始日期');
                         return;
                     }
 
-                    // 檢查其他必要的欄位
                     if (vm.orderName && vm.orderPhone && vm.selectedCar.carName && vm.startDate && vm.endDate && vm.paymentCheck) {
-                        const orderNumber = vm.generateOrderNumber(); // 使用 generateOrderNumber 方法生成唯一訂單號
+                        const orderNumber = vm.generateOrderNumber();
                         const startDate = new Date(vm.startDate);
                         const endDate = new Date(vm.endDate);
                         vm.orderDays = Math.max(1, (endDate - startDate) / (1000 * 60 * 60 * 24));
 
                         var JSONdata = {
-                            order_number: orderNumber, // 在這裡確保把訂單號設置進來
+                            order_number: orderNumber,
                             Username: vm.orderName,
                             Phone: vm.orderPhone,
                             carName: vm.selectedCar.carName,
                             carNumber: vm.selectedCar.car_Number,
-                            totalPrice: Math.floor(vm.selectedCar.car_Price * vm.orderDays), // 計算總價
+                            totalPrice: Math.floor(vm.selectedCar.car_Price * vm.orderDays),
                             station: vm.selectedStation,
                             borrowTime: vm.startDate,
                             returnTime: vm.endDate,
                             payment_method: vm.paymentCheck
                         };
 
-                        console.log("訂單數據:", JSON.stringify(JSONdata));
-
-                        // 發送訂單請求
                         $.ajax({
                             type: "POST",
-                            url: "orderlist_api.php?action=create", // 訂單創建 API
+                            url: "orderlist_api.php?action=create", 
                             data: JSON.stringify(JSONdata),
                             dataType: "json",
                             success: function (data) {
@@ -1043,7 +982,7 @@
                                         icon: "success"
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            location.href = "orderlist.html"; // 成功後跳轉頁面
+                                            location.href = "orderlist.html";
                                         }
                                     });
                                 } else {
@@ -1067,7 +1006,6 @@
                     const vm = this;
                     axios.get('station_position.php?action=getcity')
                         .then(response => {
-                            console.log("獲取的城市數據:", response.data);
                             vm.cities = response.data.data;
                         })
                         .catch(error => {
@@ -1098,10 +1036,8 @@
                 sendStationName(item) {
                     const vm = this;
                     if (item && item.stationName) {
-                        console.log("選擇的站點:", item.stationName);
                         vm.selectedStation = item.stationName;
-                        // 這裡你可以進行其他操作，比如發送請求或更新界面
-                        vm.selectedStationId = item.id; // 設定選中的站點 ID
+                        vm.selectedStationId = item.id;
                     } else {
                         console.error("未找到有效的站點資料");
                     }
@@ -1110,21 +1046,17 @@
                     const vm = this;
                     var JSONdata = {};
                     JSONdata["Username"] = vm.orderName;
-                    console.log(JSON.stringify(JSONdata));
                     $.ajax({
                         type: "GET",
                         url: `orderlist_api.php?action=orderCheck&Username=${vm.orderName}`,
                         dataType: "json",
                         success: function (data) {
-                            console.log(data);
-                            // 假設 data.state 為是否有訂單的判斷依據
                             if (!data.state) {
                                 Swal.fire({
                                     title: "您已經有訂單了",
                                     icon: "error"
                                 });
                             } else {
-                                // 沒有訂單，則執行訂單提交
                                 vm.submiOrder();
                             }
                         },
@@ -1139,9 +1071,9 @@
 
                 },
                 generateOrderNumber() {
-                    const timestamp = new Date().getTime(); // 取得當前時間戳（毫秒）
-                    const randomNumber = Math.floor(Math.random() * 1000); // 生成 0 到 999 之間的隨機數字
-                    return `ORD-${timestamp}-${randomNumber}`; // 合併成一個訂單號
+                    const timestamp = new Date().getTime();
+                    const randomNumber = Math.floor(Math.random() * 1000);
+                    return `ORD-${timestamp}-${randomNumber}`;
                 },
                 updateOrderDays() {
                     const vm = this;
@@ -1163,7 +1095,7 @@
             },
             mounted() {
                 const vm = this;
-                vm.fetchCars(); // 頁面載入時自動讀取資料
+                vm.fetchCars();
                 vm.getUid01();
                 window.addEventListener("userLoggedIn", vm.getUid01);
                 vm.runcookie();
@@ -1174,7 +1106,6 @@
             },
             beforeUnmount() {
                 const vm = this;
-                // 確保組件卸載時清除事件監聽
                 window.removeEventListener("userLoggedIn", vm.getUid01);
             },
         }
