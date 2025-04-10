@@ -217,7 +217,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.state) {
-                        console.log(data);
                         $("#count_done").text(data.data.count_donelistState);
                     }
                     else {
@@ -260,37 +259,30 @@
                 }
             });
 
-            // 當選擇的年份改變時，發送 AJAX 請求
             $('#year').change(function () {
-                const selectedYear = $(this).val(); // 獲取選擇的年份
+                const selectedYear = $(this).val();
 
                 $.ajax({
                     type: "GET",
-                    url: "orderlist_api.php?action=monthSUM",  // 你的API端點
-                    data: { year: selectedYear },  // 發送年份給後端
+                    url: "orderlist_api.php?action=monthSUM",
+                    data: { year: selectedYear },
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
                         if (data.state) {
-                            // 確保返回的數據是正確的
-                            const months = data.data.map(item => item.month); // 獲取每個月
-                            const revenues = data.data.map(item => item.total_revenue); // 獲取每個月的收入
-
-                            // 如果已經存在圖表，銷毀舊圖表
+                            const months = data.data.map(item => item.month);
+                            const revenues = data.data.map(item => item.total_revenue);
                             if (mychart01) {
                                 mychart01.destroy();
                             }
-
-                            // 創建新的圖表
                             mychart01 = new Chart(document.getElementById('myChart01'), {
-                                type: 'bar',  // 可以選擇 'bar', 'line', 等等
+                                type: 'bar',
                                 data: {
-                                    labels: months,  // x軸標籤是每個月
+                                    labels: months,
                                     datasets: [{
                                         label: '每月收入',
-                                        data: revenues,  // y軸是每月的收入
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',  // 設置條形圖的顏色
-                                        borderColor: 'rgba(75, 192, 192, 1)',  // 設置邊框顏色
+                                        data: revenues,
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderColor: 'rgba(75, 192, 192, 1)',
                                         borderWidth: 1
                                     }]
                                 },
@@ -298,13 +290,12 @@
                                     responsive: true,
                                     scales: {
                                         y: {
-                                            beginAtZero: true  // 設置y軸從0開始
+                                            beginAtZero: true
                                         }
                                     }
                                 }
                             });
                         } else {
-                            // 如果後端返回錯誤，顯示錯誤消息
                             Swal.fire({
                                 title: data.message,
                                 icon: "error",
@@ -312,7 +303,6 @@
                         }
                     },
                     error: function (xhr, status, error) {
-                        // 請求失敗時，顯示錯誤消息
                         Swal.fire({
                             title: "請求失敗，請稍後再試。",
                             icon: "error",
@@ -320,8 +310,6 @@
                     }
                 });
             });
-
-            // 頁面加載時觸發一次，確保在初始狀態下也能顯示報表
             $('#year').trigger('change');
 
 
@@ -335,13 +323,9 @@
             },
             created() {
                 const vm = this;
-                //確認uid01是否存在
                 if (vm.getCookie("Uid01")) {
-                    //將uid01傳遞至後端API執行驗證
-                    //input{"uid01":"1ssadwasdw"}
                     var JSONdata = {};
                     JSONdata["uid01"] = vm.getCookie("Uid01");
-                    console.log(JSON.stringify(JSONdata));
 
                     $.ajax({
                         type: "POST",
@@ -349,38 +333,19 @@
                         data: JSON.stringify(JSONdata),
                         dataType: "json",
                         success: function (data) {
-                            console.log(data);
                             if (data.state) {
-                                console.log(data.data.Role)
                                 if (data.data.Role === "管理員") {
-                                    console.log("歡迎管理員登入！");
                                     $("#card").removeClass("d-none");
-                                    //顯示歡迎訊息
                                     $("#s02_username_showtext").removeClass("d-none");
                                     $("#s02_username_text").text(data.data.Username);
-
-                                    //顯示登出按鈕
                                     $("#s02_logout_btn").removeClass("d-none");
-
-                                    // 按鈕監聽update_btn
-                                    $("#mydata #update_btn").click(function () {
-                                        console.log($(this).data("id"));
-                                        console.log($(this).data("username"));
-                                        console.log($(this).data("email"));
-
-                                        //將資料同步至modal
-                                        u_id = $(this).data("id");
-                                        $("#updateModal_username").val($(this).data("username"));
-                                        $("#updateModal_email").val($(this).data("email"));
-
-                                    });
                                 } else {
                                     Swal.fire({
                                         title: "權限不足",
                                         icon: "warning",
                                         text: "此帳號無管理員權限",
                                     }).then(() => {
-                                        location.href = "index.html"; // 跳回首頁
+                                        location.href = "index.html";
                                     });
                                 }
 
@@ -393,7 +358,6 @@
                                     denyButtonText: `Don't save`,
                                     allowOutsideClick: false
                                 }).then((result) => {
-                                    /* Read more about isConfirmed, isDenied below */
                                     if (result.isConfirmed) {
                                         location.href = "index.html";
                                     }
@@ -433,13 +397,9 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             vm.setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
