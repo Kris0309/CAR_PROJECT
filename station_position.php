@@ -1,8 +1,8 @@
 <?php
-const DB_SERVER   = "192.168.2.3";
-const DB_USERNAME = "stone_test";
-const DB_PASSWORD = "Pks2pZD9LQCYLpCI75k5fw";
-const DB_NAME     = "stone_test";
+const DB_SERVER   = "";
+const DB_USERNAME = "";
+const DB_PASSWORD = "";
+const DB_NAME     = "";
 
 function create_connection()
 {
@@ -28,7 +28,6 @@ function respond($state, $message, $data = null)
 function get_alldata()
 {
     $conn = create_connection();
-
     $stmt = $conn->prepare("SELECT * FROM station_position ORDER BY id DESC");
     $stmt->execute();
     $result = $stmt->get_result();
@@ -49,7 +48,6 @@ function get_alldata()
 function get_citydata()
 {
     $conn = create_connection();
-
     $stmt = $conn->prepare("SELECT cityName FROM station_position GROUP BY cityName ORDER BY MIN(id) ASC");
     $stmt->execute();
     $result = $stmt->get_result();
@@ -70,7 +68,6 @@ function get_citydata()
 function count_station()
 {
     $conn = create_connection();
-
     $sql = "SELECT count(*) as count_staitionName FROM station_position";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -98,16 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         default:
             respond(false, "無效的操作");
     }
-}  else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $action = $_GET['action'] ?? '';
-    switch ($action) {
-        case 'delete':
-            
-            break;
-
-        default:
-            respond(false, "無效的操作");
-    }
-} else {
+} 
+else {
     respond(false, "無效的請求方法");
 }
