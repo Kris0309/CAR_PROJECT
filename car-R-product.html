@@ -84,7 +84,6 @@
                 </div>
             </div>
 
-            <!-- updateModal -->
             <div class="modal fade modal-lg" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -155,7 +154,6 @@
         </div>
     </div>
 
-
     <script src="/CAR_PROJECT/js/bootstrap.bundle.min.js"></script>
     <script src="/CAR_PROJECT/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -166,22 +164,15 @@
         var flag_position = true;
         var flag_floatingTextarea2 = true;
         var flag_on_state = true;
-
         var uid;
 
         function showdata_checkuid(data) {
             console.log(data);
             if (data.state) {
                 if (data.data.Role === "管理員") {
-                    console.log("歡迎管理員登入！");
-                    //顯示歡迎訊息
                     $("#s02_username_showtext").removeClass("d-none");
                     $("#s02_username_text").text(data.data.Username);
-
-                    //顯示登出按鈕
                     $("#s02_logout_btn").removeClass("d-none");
-
-                    //渲染table資料
                     $.ajax({
                         type: "GET",
                         url: "car_control_api.php?action=carlist",
@@ -198,21 +189,14 @@
                         icon: "warning",
                         text: "此帳號無管理員權限",
                     }).then(() => {
-                        location.href = "index.html"; // 跳回首頁
+                        location.href = "index.html";
                     });
                 }
 
 
             }
 
-            //監聽更新按鈕update_btn
             $("#mydata #update_btn").click(function () {
-                console.log($(this).data("id"));
-                console.log($(this).data("price"));
-                console.log($(this).data("position"));
-                console.log($(this).data("remark"));
-                console.log($(this).data("onstate"));
-
                 uid = $(this).data("id");
                 $("#carName").val($(this).data("name"));
                 $("#carNumber").val($(this).data("number"));
@@ -222,7 +206,6 @@
                 $("#floatingTextarea2").val($(this).data("remark"));
             });
 
-            //監聽刪除按鈕delete_btn
             $("#mydata #delete_btn").click(function () {
                 Swal.fire({
                     title: "確認刪除?",
@@ -236,14 +219,8 @@
                     confirmButtonText: "確認"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        console.log($(this).data("id"));
-                        //傳遞至後端API執行刪除行為
-                        //input: {"id" : "XXX"}
-
                         var JSONdata = {};
                         JSONdata["id"] = $(this).data("id");
-                        console.log(JSON.stringify(JSONdata));
-
                         $.ajax({
                             type: "DELETE",
                             url: "car_control_api.php?action=delete",
@@ -251,14 +228,13 @@
                             dataType: "json",
                             success: showdata_delete,
                             error: function () {
-                                alert("car_control_api.php");//sweetalert
+                                alert("car_control_api.php");
                             }
                         });
                     }
                 });
             });
 
-            //即時監聽 price
             $("#pcarPrice").bind("input propertychange", function () {
                 if ($(this).val() > 0 && $(this).val() < 100000) {
                     $(this).removeClass("is-invalid");
@@ -307,18 +283,14 @@
                 }
             });
 
-            //監聽updateModal_ok_btn
             $("#updateModal_ok_btn").click(function () {
                 if (flag_pcarPrice && flag_position && flag_on_state) {
-                    //符合規定, 傳遞至後端API執行更新行為
                     var JSONdata = {};
                     JSONdata["id"] = uid;
                     JSONdata["car_Price"] = $("#pcarPrice").val();
                     JSONdata["position"] = $("#position").val();
                     JSONdata["remark"] = $("#floatingTextarea2").val();
                     JSONdata["on_state"] = $("#on_state").val();
-                    console.log(JSON.stringify(JSONdata));
-
                     $.ajax({
                         type: "POST",
                         url: "car_control_api.php?action=update",
@@ -340,7 +312,6 @@
         }
 
         function showdata(data) {
-            console.log(data);
             $("#mydata").empty();
             if (data.state) {
                 data.data.forEach(function (item) {
@@ -382,7 +353,6 @@
         }
 
         function showdata_updata(data) {
-            console.log(data);
             if (data.state) {
                 Swal.fire({
                     title: "更新成功",
@@ -400,7 +370,6 @@
         }
 
         function showdata_delete(data) {
-            console.log(data);
             if (data.state) {
                 Swal.fire({
                     title: "刪除成功",
@@ -417,7 +386,6 @@
             }
         }
 
-        //from w3school
         function setCookie(cname, cvalue, exdays) {
             const d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -460,24 +428,16 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // 當用戶點擊「確認」時，執行登出操作
                             setCookie("Uid01", "", 7);
                             location.href = "index.html";
                             $("#drop").addClass("d-none");
-                        } else if (result.isDenied) {
-                            // 當用戶點擊「取消」時，什麼也不做
-                            console.log("取消登出");
                         }
                     })
                 },
                 checkUid01() {
-                    //確認uid01是否存在
                     if (getCookie("Uid01")) {
-                        //將uid01傳遞至後端API執行驗證
-                        //input{"uid01":"1ssadwasdw"}
                         var JSONdata = {};
                         JSONdata["uid01"] = getCookie("Uid01");
-                        console.log(JSON.stringify(JSONdata));
 
                         $.ajax({
                             type: "POST",
