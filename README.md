@@ -52,7 +52,7 @@
 
 <img src="https://imgur.com/N69WsBR.jpg" width="45%" /> <img src="https://imgur.com/FrQg7Cs.jpg" width="45%" />
 
-### 📌 後台
+### 📌 後台(只有傭有管理員權限的人可以看)
 
 ### ❗ 資料皆為虛構
 
@@ -67,6 +67,17 @@
 >**訂單管理/報表**
 
 <img src="https://imgur.com/81dcQNf.jpg" width="45%" /> <img src="https://imgur.com/IMFAaUb.jpg" width="45%" />
+
+## 之後想新增或修改的內容
+
+>前台
+- [ ] 客戶端取消訂單
+- [ ] 訂單日天數不足一天則自動以一天計算
+- [ ] 車輛不會被同時預定
+>後台
+- [ ] 後台訂單管理按鈕修改
+- [ ] 客戶端取消訂單後記錄依然留存
+- [ ] 圖表優化
 
 ## 🙌 聯絡我
 
