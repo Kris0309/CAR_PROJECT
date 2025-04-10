@@ -48,7 +48,7 @@
 
 <img src="https://imgur.com/mxbnmzp.jpg" width="45%" /> <img src="https://imgur.com/j7HSSl6.jpg" width="45%" />
 
->**租車界面/訂單頁面**
+>**租車介面/訂單頁面**
 
 <img src="https://imgur.com/N69WsBR.jpg" width="45%" /> <img src="https://imgur.com/FrQg7Cs.jpg" width="45%" />
 
